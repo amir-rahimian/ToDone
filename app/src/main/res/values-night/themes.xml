@@ -1,0 +1,20 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.ToDone" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/background_dark</item>
+        <item name="colorPrimaryVariant">@color/textColor_hint</item>
+        <item name="colorOnPrimary">@color/textColor_dark</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/blue</item>
+        <item name="colorSecondaryVariant">@color/error_dark</item>
+        <item name="colorOnSecondary">@color/colorSecondary_dark</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="m">?attr/colorPrimary</item>
+        <!-- Customize your theme here. -->
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+        <item name="android:datePickerDialogTheme">@style/datePicker</item>
+        <item name="android:timePickerDialogTheme">@style/timePickerTheme</item>
+        <item name="android:popupMenuStyle">@style/popupStyle</item>
+    </style>
+</resources>
