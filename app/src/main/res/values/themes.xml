@@ -7,7 +7,7 @@
         <item name="colorOnPrimary">@color/textColor_light</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/blue</item>
-        <item name="colorSecondaryVariant">@color/error_light</item>
+        <item name="colorSecondaryVariant">@color/textColor_hint</item>
         <item name="colorOnSecondary">@color/colorSecondary_light</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="m">?attr/colorPrimary</item>
@@ -17,6 +17,8 @@
         <item name="android:datePickerDialogTheme">@style/datePicker</item>
         <item name="android:timePickerDialogTheme">@style/timePickerTheme</item>
         <item name="android:popupMenuStyle">@style/popupStyle</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="android:windowActivityTransitions">true</item>
     </style>
 
     <style name="fabShape" parent="ShapeAppearance.MaterialComponents.SmallComponent">
@@ -54,6 +56,32 @@
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
+    <style name="textStyle.homeTitles" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="textStyle.homeTitles.counter" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="textStyle.taskCard.categoryText" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/textColor_dark</item>
+    </style>
+
+    <style name="textStyle.taskCard.dateText" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <style name="textStyle.taskCard.timeText" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/colorSecondary</item>
+    </style>
+
     <style name="editText.addTask" parent="Widget.AppCompat.EditText">
         <item name="android:paddingStart">16dp</item>
         <item name="android:paddingEnd">16dp</item>
@@ -84,7 +112,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textColorHint">?attr/colorPrimaryVariant</item>
-        <item name="android:background">?attr/colorOnSecondary</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="textStyle.hintTextView" parent="Widget.AppCompat.TextView">
@@ -127,5 +155,10 @@
     </style>
     <style name="popupStyle" parent="ThemeOverlay.AppCompat">
         <item name="android:popupBackground">?attr/colorOnSecondary</item>
+    </style>
+
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 </resources>

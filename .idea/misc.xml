@@ -5,11 +5,15 @@
       <map>
         <entry key="..\:/Users/Rahimian/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_1.xml" value="0.259375" />
         <entry key="..\:/Users/Rahimian/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_2.xml" value="0.259375" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/badge_background.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/bottomsheet_background.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/dialog_background.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/dialog_backround.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_add.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_add_category.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_app_name.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_arrow_circle_up.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_back.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_blue_circle_add.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_calendar.xml" value="0.2755208333333333" />
@@ -17,15 +21,26 @@
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_calendar_selector.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_calender_selector.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_category.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_clock.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_del.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_home.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_home_selected.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_home_selector.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_icon.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_menu.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_moon.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_setting.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_sun.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_tick_done.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/ic_user.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/selected_color.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/drawable/task_text_view_background.xml" value="0.2755208333333333" />
-        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/activity_main_content.xml" value="0.259375" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/activity_categories.xml" value="0.259375" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/activity_category.xml" value="0.536" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/activity_main_content.xml" value="0.264" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/activity_showTasks.xml" value="0.4" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/activity_show_tasks.xml" value="0.259375" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/add_categoty_layout.xml" value="0.4" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/add_new_task_bottomsheet_layout.xml" value="0.4" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/add_subtask_layout.xml" value="0.536" />
@@ -35,9 +50,11 @@
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/content_main.xml" value="0.259375" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/dialog_layout.xml" value="0.4" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/fragment_calender.xml" value="0.259375" />
-        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/fragment_home.xml" value="0.259375" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/fragment_home.xml" value="0.264" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/nav_header_main.xml" value="0.6" />
-        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/new_task_bottomsheet_layout.xml" value="0.176" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/new_task_bottomsheet_layout.xml" value="0.264" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/subtask_layout.xml" value="0.4" />
+        <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/task_layout.xml" value="0.4" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/layout/test.xml" value="0.6" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/menu/bottom_nav_menu.xml" value="0.259375" />
         <entry key="..\:/Users/Rahimian/StudioProjects/ToDone/app/src/main/res/menu/edit_delete_menu.xml" value="0.259375" />

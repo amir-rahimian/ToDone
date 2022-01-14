@@ -22,14 +22,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.amir.todone.Domain.Category.CategoryManager;
+import com.amir.todone.Domain.Task.SubTask;
+import com.amir.todone.Domain.Task.Task;
+import com.amir.todone.Domain.Task.TaskManager;
+import com.amir.todone.Objects.DateManager;
 import com.amir.todone.R;
-import com.amir.todone.Domain.Category;
+import com.amir.todone.Domain.Category.Category;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class AddTaskBottomDialog extends BottomSheetDialogFragment {
@@ -114,6 +121,9 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                if ((null != edtTaskText.getLayout() && edtTaskText.getLayout().getLineCount() > 5)) {
+                    edtTaskText.getText().delete(edtTaskText.getText().length() - 1, edtTaskText.getText().length());
+                }
             }
         });
 
@@ -129,6 +139,23 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
                         if (keycode == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_DOWN)
                             addASubtaskOption.callOnClick();
                         return false;
+                    });
+                    sub.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                            
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            if (s.length()==30)
+                                Toast.makeText(getContext(), "Max length of a subTask is 30 characters", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+
+                        }
                     });
                     subListAddView.findViewById(R.id.imgDel).setOnClickListener(delView -> {
                         subList.removeView(subListAddView);
@@ -153,14 +180,7 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
 
 
         categoryOp.setOnClickListener(v -> {
-            List<Category> categories = new ArrayList<>();
-            try {
-                categories.add(new Category("Work"));
-                categories.add(new Category("Personals"));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            List<Category> categories = CategoryManager.getInstance(getContext()).getAllCategories();
             new CategoryPickerDialog(getContext(), categories,
                     new CategoryPickerDialog.onSelectListener() {
                         @Override
@@ -182,9 +202,7 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
         dateOp.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                     (DatePickerDialog.OnDateSetListener) (view12, year, month, dayOfMonth) -> {
-                        Log.e("DATE", year + "/" + (month+1) + "/" + dayOfMonth);
-                        //Todo : format date
-                        taskDate = year + "/" + (month+1) + "/" + dayOfMonth;
+                        taskDate = new DateManager(Calendar.getInstance()).formatDateForDateBase(year, month, dayOfMonth);
                         txtDateSelected.setText(taskDate);
                     },
                     Calendar.getInstance().get(Calendar.YEAR),
@@ -202,15 +220,12 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
         timeOp.setOnClickListener(v -> {
             TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
                     (TimePickerDialog.OnTimeSetListener) (view13, hourOfDay, minute) -> {
-                        Log.e("Time", hourOfDay + ":" + minute);
-                        //Todo : format time
-                        taskTime = hourOfDay + ":" + minute;
+                        taskTime = new DateManager(Calendar.getInstance()).formatTimeForDateBase(hourOfDay,minute);
                         txtTimeSelected.setText(taskTime);
                     },
                     Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
                     Calendar.getInstance().get(Calendar.MINUTE),
-                    true
-            );
+                    true);
             timePickerDialog.show();
             timeOp.setClickable(false);
             new Handler().postDelayed(new Runnable() {
@@ -236,12 +251,14 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
 
     private void addTask() {
         String task = edtTaskText.getText().toString();
-        String subTasks = subTaskData();
-        CustomDialog customDialog = new CustomDialog(getContext());
-        customDialog.setTitle("Task:"+task);
-        customDialog.setMassage("sub:"+subTasks+"\ncategory:"+((taskCategory==null)?"none":taskCategory.getName())+"\ndate:"+taskDate+"\ntime:"+taskTime);
-        customDialog.show(requireActivity().getSupportFragmentManager(),"TASK");
+        List<SubTask> subTasks = subTaskData();
         //TOdo : add Task
+        TaskManager.getInstance(getContext())
+                .createTask(new Task(task,(taskCategory==null)?"-1":taskCategory.getId(),
+                        (taskDate==null)?"-1":taskDate,
+                        (taskTime==null)?"-1":taskTime,
+                        subTasks));
+        dismiss();
     }
 
     @Override
@@ -250,17 +267,16 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
-    private String subTaskData() {
-        StringBuilder stringBuilder = new StringBuilder("");
+    private List<SubTask> subTaskData() {
+        ArrayList<SubTask> subTasks = new ArrayList<>();
         for (int i = 0; i < subList.getChildCount(); i++) {
             if (subList.getChildAt(i) != null) {
                 EditText editText = subList.getChildAt(i).findViewById(R.id.edtAddCategory);
                 if (!editText.getText().toString().matches("")) {
-                    stringBuilder.append(i).append("[").append(editText.getText().toString()).append("],");
+                    subTasks.add(new SubTask(editText.getText().toString().trim()));
                 }
             }
         }
-        Log.e("DATA", stringBuilder.toString());
-        return stringBuilder.toString();
+        return subTasks;
     }
 }

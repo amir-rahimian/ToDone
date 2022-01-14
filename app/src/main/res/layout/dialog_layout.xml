@@ -43,7 +43,7 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtDialogTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/txtDCategoryTitle"
                     app:layout_constraintBottom_toTopOf="@id/edtDialogInput"/>
 
                 <EditText
@@ -87,7 +87,7 @@
                     app:layout_constraintBottom_toTopOf="@id/checkBox"/>
 
                 <TextView
-                    android:id="@+id/txtDialogTitle"
+                    android:id="@+id/txtDCategoryTitle"
                     style="@style/textStyle.DialogTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -103,7 +103,6 @@
                 style="@style/textStyle.hintTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:text="dialog hint"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -114,7 +113,6 @@
                 android:id="@+id/buttons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/txtDialogHint"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

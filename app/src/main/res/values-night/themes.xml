@@ -7,7 +7,7 @@
         <item name="colorOnPrimary">@color/textColor_dark</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/blue</item>
-        <item name="colorSecondaryVariant">@color/error_dark</item>
+        <item name="colorSecondaryVariant">@color/textColor_hint</item>
         <item name="colorOnSecondary">@color/colorSecondary_dark</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="m">?attr/colorPrimary</item>
@@ -16,5 +16,7 @@
         <item name="android:datePickerDialogTheme">@style/datePicker</item>
         <item name="android:timePickerDialogTheme">@style/timePickerTheme</item>
         <item name="android:popupMenuStyle">@style/popupStyle</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="android:windowActivityTransitions">true</item>
     </style>
 </resources>

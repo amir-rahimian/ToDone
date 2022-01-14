@@ -4,13 +4,12 @@
     <color name="background_light">#FFF1F5F8</color>
     <color name="textColor_light">#FF141D24</color>
     <color name="colorSecondary_light">#FFFFFFFF</color>
-    <color name="error_light">#E91E63</color>
     <!-- LIGHT COLORS -->
     <color name="background_dark">#FF141D24</color>
     <color name="textColor_dark">#FFFFFFFF</color>
     <color name="colorSecondary_dark">#FF222C38</color>
-    <color name="error_dark">#EC407A</color>
     <!-- SAME COLORS -->
     <color name="textColor_hint">#FF9DB1C0</color>
     <color name="blue">#FF0099FF</color>
+    <color name="error">#EC407A</color>
 </resources>

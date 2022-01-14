@@ -12,6 +12,48 @@
         android:orientation="vertical">
 
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottomSheetBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.5"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:enabled="false"
+                android:text="Add"
+                android:textColor="?attr/colorSecondary"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtAdtask"
+                style="@style/textStyle.settings.title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="18dp"
+                android:text="Add new Task"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="32dp"
+                android:layout_height="3dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="?attr/colorPrimaryVariant"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.core.widget.NestedScrollView
             android:id="@+id/bottomSheet"
             android:layout_width="match_parent"
@@ -24,48 +66,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/bottomSheetBarLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <Button
-                        android:id="@+id/btnAdd"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:text="Add"
-                        android:enabled="false"
-                        android:alpha="0.5"
-                        android:textColor="?attr/colorSecondary"
-                        android:textSize="16dp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/txtAdtask"
-                        style="@style/textStyle.settings.title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginTop="18dp"
-                        android:text="Add new Task"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="32dp"
-                        android:layout_height="3dp"
-                        android:layout_marginTop="10dp"
-                        android:backgroundTint="?attr/colorPrimaryVariant"
-                        app:cardCornerRadius="2dp"
-                        app:cardElevation="0dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <EditText
                     android:id="@+id/edtTaskText"
@@ -118,7 +118,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/txtCategoryHint"
+                    android:id="@+id/txtCategoryPickerHint"
                     style="@style/textStyle.hintTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

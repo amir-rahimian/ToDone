@@ -1,0 +1,271 @@
+package com.amir.todone.DA;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.preference.PreferenceManager;
+import android.util.Log;
+
+import com.amir.todone.Domain.Category.Category;
+import com.amir.todone.Domain.Task.SubTask;
+import com.amir.todone.Domain.Task.Task;
+import com.amir.todone.Objects.Field;
+import com.amir.todone.Objects.FieldMap;
+import com.amir.todone.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Da {
+
+    //SQLite obj
+    private final SQLite sql;
+
+    //share pref
+    private final SharedPreferences sharedPref;
+
+    //editor
+    private final SharedPreferences.Editor editor;
+
+    //context
+    private Context context;
+
+    //Instance
+    private static Da da;
+
+    //constructor
+    private Da(Context context) {
+        sql = new SQLite(context);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        editor = sharedPref.edit();
+        this.context = context;
+    }
+
+    public static Da getInstance(Context context) {
+        if (da == null)
+            da = new Da(context);
+        return da;
+    }
+
+
+    //create tables
+    public void createTables() {
+        boolean is_databaseBuild = sharedPref.getBoolean("is_databaseBuild", false);
+        Log.e("TAble", is_databaseBuild + "");
+        if (!is_databaseBuild) {
+            SharedPreferences.Editor editor = sharedPref.edit();
+
+            //Category table
+            sql.createTable(getStrRes(R.string.tableName_Categories), new FieldMap(
+                    new Field(getStrRes(R.string.category_Name), "VARCHAR(30)"),
+                    new Field(getStrRes(R.string.category_Count), "INTEGER DEFAULT 0")), null);
+
+            createCategory(new Category("Work"));
+            createCategory(new Category("Personal"));
+            createCategory(new Category("Study"));
+
+            //Task table
+            sql.createTable(getStrRes(R.string.tableName_Tasks), new FieldMap(
+                            new Field(getStrRes(R.string.task_text), "TEXT"),
+                            new Field(getStrRes(R.string.task_isDone), "INTEGER DEFAULT 0"),
+                            new Field(getStrRes(R.string.task_Date), "VARCHAR(30)"),
+                            new Field(getStrRes(R.string.task_Time), "VARCHAR(30)"),
+                            new Field(getStrRes(R.string.task_subTasks_Count), "INTEGER DEFAULT 0")),
+                    new FieldMap(new Field(getStrRes(R.string.task_Category_id), "INTEGER ," +
+                            " FOREIGN KEY (" + getStrRes(R.string.task_Category_id) +
+                            ") REFERENCES " + getStrRes(R.string.tableName_Categories) + "(id)")));
+
+            //subTask table
+            sql.createTable(getStrRes(R.string.tableName_SubTasks), new FieldMap(
+                            new Field(getStrRes(R.string.subTask_name), "VARCHAR(30)"),
+                            new Field(getStrRes(R.string.subTask_isDone), "INTEGER DEFAULT 0")),
+                    new FieldMap(new Field(getStrRes(R.string.subTask_Task_id), "INTEGER ," +
+                            " FOREIGN KEY (" + getStrRes(R.string.subTask_Task_id) +
+                            ") REFERENCES " + getStrRes(R.string.tableName_Tasks) + "(id)")));
+
+            editor.putBoolean("is_databaseBuild", true);
+            editor.apply();
+
+        }
+    }
+
+    //create a Category
+    public String createCategory(Category category) {
+        return sql.insert(getStrRes(R.string.tableName_Categories), new FieldMap(
+                new Field(getStrRes(R.string.category_Name), category.getName()),
+                new Field(getStrRes(R.string.category_Count), "0")));
+    }
+
+    //edit a Category
+    public void editCategoryName(Category category, String newName) {
+        sql.update(getStrRes(R.string.tableName_Categories),
+                new Field("id", category.getId()), new Field(getStrRes(R.string.category_Name), newName)
+        );
+    }
+
+    //a task add or deleted that had this category
+    public void editCategoryCount(Category category, int newCount) {
+        sql.update(getStrRes(R.string.tableName_Categories),
+                new Field("id", category.getId()), new Field(getStrRes(R.string.category_Count), newCount + "")
+        );
+    }
+
+    //delete Category
+    public void deleteCategory(Category category) {
+        sql.delete(getStrRes(R.string.tableName_Categories),
+                new Field("id", category.getId()));
+    }
+
+    // get all Categories
+    public List<Category> getAllCategories() {
+        Cursor cursor = sql.select(getStrRes(R.string.tableName_Categories));
+        List<Category> result = new ArrayList<Category>();
+        while (cursor.moveToNext()) {
+            String id = cursor.getString(
+                    cursor.getColumnIndexOrThrow("id"));
+            String name = cursor.getString(
+                    cursor.getColumnIndexOrThrow(getStrRes(R.string.category_Name)));
+            int count = cursor.getInt(
+                    cursor.getColumnIndexOrThrow(getStrRes(R.string.category_Count)));
+            result.add(new Category(id, name, count));
+        }
+        return result;
+    }
+
+    // get count of Categories
+    public int getCategoriesCount() {
+        return sql.getCount(getStrRes(R.string.tableName_Categories), null);
+    }
+
+    //get category bu passing Id
+    public Category getCategoryById(String catId) {
+        Cursor cursor = sql.select(getStrRes(R.string.tableName_Categories), null,
+                new Field("id", catId));
+        Category category = null;
+        while (cursor.moveToNext()) {
+            String id = cursor.getString(
+                    cursor.getColumnIndexOrThrow("id"));
+            String name = cursor.getString(
+                    cursor.getColumnIndexOrThrow(getStrRes(R.string.category_Name)));
+            int count = cursor.getInt(
+                    cursor.getColumnIndexOrThrow(getStrRes(R.string.category_Count)));
+            category = new Category(id, name, count);
+        }
+        return category;
+    }
+
+    //get Category's tasks
+    public List<Task> getCategoryTasks(Category category) {
+        Cursor cursor = sql.select(getStrRes(R.string.tableName_Tasks), null,
+                new Field(getStrRes(R.string.task_Category_id), category.getId()));
+        List<Task> result = new ArrayList<Task>();
+        while (cursor.moveToNext()) {
+            String id = cursor.getString(
+                    cursor.getColumnIndexOrThrow("id"));
+            String text = cursor.getString(
+                    cursor.getColumnIndexOrThrow(getStrRes(R.string.task_text)));
+            boolean isDone = cursor.getInt(
+                    cursor.getColumnIndexOrThrow(getStrRes(R.string.task_isDone))) == 1;
+            String categoryId = cursor.getString(
+                    cursor.getColumnIndexOrThrow(getStrRes(R.string.task_Category_id)));
+            String date = cursor.getString(
+                    cursor.getColumnIndexOrThrow(getStrRes(R.string.task_Date)));
+            String time = cursor.getString(
+                    cursor.getColumnIndexOrThrow(getStrRes(R.string.task_Time)));
+
+            Cursor subcursor = sql.select(getStrRes(R.string.tableName_SubTasks), null,
+                    new Field(getStrRes(R.string.subTask_Task_id), id));
+            List<SubTask> subs = new ArrayList<SubTask>();
+            while (subcursor.moveToNext()) {
+                String s_id = subcursor.getString(
+                        subcursor.getColumnIndexOrThrow("id"));
+                String s_name = subcursor.getString(
+                        subcursor.getColumnIndexOrThrow(getStrRes(R.string.subTask_name)));
+                boolean s_isDone = subcursor.getInt(
+                        subcursor.getColumnIndexOrThrow(getStrRes(R.string.subTask_isDone))) == 1;
+                String s_taskId = subcursor.getString(
+                        subcursor.getColumnIndexOrThrow(getStrRes(R.string.subTask_Task_id)));
+                subs.add(new SubTask(s_id,s_name,s_isDone,s_taskId));
+            }
+            result.add(new Task(id , text ,isDone, categoryId , date , time , subs ));
+        }
+        return result;
+    }
+
+    // create Task
+    public List<String> createTask(Task task) {
+        List<String> ids = new ArrayList<>();
+        String id = sql.insert(getStrRes(R.string.tableName_Tasks), new FieldMap(
+                new Field(getStrRes(R.string.task_text), task.getTaskText()),
+                new Field(getStrRes(R.string.task_Date), task.getDate()),
+                new Field(getStrRes(R.string.task_Time), task.getTime()),
+                new Field(getStrRes(R.string.task_subTasks_Count), task.getSubtasks_count() + ""),
+                new Field(getStrRes(R.string.task_Category_id), task.getCategory_id())));
+        ids.add(id);
+        for (SubTask s :
+                task.getSubtasks()) {
+            ids.add(sql.insert(getStrRes(R.string.tableName_SubTasks), new FieldMap(
+                    new Field(getStrRes(R.string.subTask_name), s.getText()),
+                    new Field(getStrRes(R.string.subTask_Task_id),id))));
+        }
+        sql.incrementBy(1, getStrRes(R.string.category_Count),
+                getStrRes(R.string.tableName_Categories),
+                new Field("id",task.getCategory_id()));
+        return ids;
+    }
+
+    private List<Task> getTaskFilterBy(Field filter){
+        Cursor cursor = sql.select(getStrRes(R.string.tableName_Tasks), null, filter);
+        List<Task> result = new ArrayList<Task>();
+        while (cursor.moveToNext()) {
+            String id = cursor.getString(
+                    cursor.getColumnIndexOrThrow("id"));
+            String text = cursor.getString(
+                    cursor.getColumnIndexOrThrow(getStrRes(R.string.task_text)));
+            String categoryId = cursor.getString(
+                    cursor.getColumnIndexOrThrow(getStrRes(R.string.task_Category_id)));
+            String date = cursor.getString(
+                    cursor.getColumnIndexOrThrow(getStrRes(R.string.task_Date)));
+            String time = cursor.getString(
+                    cursor.getColumnIndexOrThrow(getStrRes(R.string.task_Time)));
+
+            Cursor subcursor = sql.select(getStrRes(R.string.tableName_SubTasks), null,
+                    new Field(getStrRes(R.string.subTask_Task_id), id));
+            List<SubTask> subs = new ArrayList<SubTask>();
+            while (subcursor.moveToNext()) {
+                String s_id = subcursor.getString(
+                        subcursor.getColumnIndexOrThrow("id"));
+                String s_name = subcursor.getString(
+                        subcursor.getColumnIndexOrThrow(getStrRes(R.string.subTask_name)));
+                boolean s_isDone = subcursor.getInt(
+                        subcursor.getColumnIndexOrThrow(getStrRes(R.string.subTask_isDone))) == 1;
+                String s_taskId = subcursor.getString(
+                        subcursor.getColumnIndexOrThrow(getStrRes(R.string.subTask_Task_id)));
+                subs.add(new SubTask(s_id,s_name,s_isDone,s_taskId));
+            }
+            result.add(new Task(id , text , true, categoryId , date , time , subs ));
+        }
+        return result;
+    }
+
+    //get Done tasks
+    public List<Task> getDoneTasks() {
+        return getTaskFilterBy(new Field(getStrRes(R.string.task_isDone), "1"));
+    }
+
+    //get Task by Date
+    public List<Task> getTaskByDate(String inDate) {
+        return getTaskFilterBy(new Field(getStrRes(R.string.task_Date), inDate));
+    }
+
+    // get count of done Tasks;
+    public int getDoneCount() {
+        return sql.getCount(getStrRes(R.string.tableName_Tasks),
+                new Field(getStrRes(R.string.task_isDone),"1"));
+    }
+    // get string
+    private String getStrRes(int res) {
+        return context.getString(res);
+    }
+
+}

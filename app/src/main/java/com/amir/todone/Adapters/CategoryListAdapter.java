@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.amir.todone.R;
-import com.amir.todone.Domain.Category;
+import com.amir.todone.Domain.Category.Category;
 
 import java.util.List;
 
@@ -76,7 +76,7 @@ public class CategoryListAdapter extends ArrayAdapter<Category> {
         });
 
         txtCategory.setText(category.getName());
-        txtCategoryCount.setText(category.getCount()+"");
+        txtCategoryCount.setText(category.getTaskCount()+"");
 
         return convertView;
     }

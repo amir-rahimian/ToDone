@@ -5,14 +5,14 @@
     android:viewportHeight="24">
   <path
       android:pathData="M19,10.75h-2A3.381,3.381 0,0 1,13.25 7v-2A3.381,3.381 0,0 1,17 1.25h2A3.381,3.381 0,0 1,22.75 5v2A3.381,3.381 0,0 1,19 10.75ZM17,2.75c-1.58,0 -2.25,0.67 -2.25,2.25v2C14.75,8.58 15.42,9.25 17,9.25h2C20.58,9.25 21.25,8.58 21.25,7v-2C21.25,3.42 20.58,2.75 19,2.75Z"
-      android:fillColor="#09f"/>
+      android:fillColor="?attr/colorSecondary"/>
   <path
       android:pathData="M7,22.75h-2A3.381,3.381 0,0 1,1.25 19v-2A3.381,3.381 0,0 1,5 13.25h2A3.381,3.381 0,0 1,10.75 17v2A3.381,3.381 0,0 1,7 22.75ZM5,14.75c-1.58,0 -2.25,0.67 -2.25,2.25v2C2.75,20.58 3.42,21.25 5,21.25h2C8.58,21.25 9.25,20.58 9.25,19v-2C9.25,15.42 8.58,14.75 7,14.75Z"
-      android:fillColor="#09f"/>
+      android:fillColor="?attr/colorSecondary"/>
   <path
       android:pathData="M6,10.75A4.75,4.75 0,1 1,10.75 6,4.754 4.754,0 0,1 6,10.75ZM6,2.75A3.25,3.25 0,1 0,9.25 6,3.256 3.256,0 0,0 6,2.75Z"
-      android:fillColor="#09f"/>
+      android:fillColor="?attr/colorSecondary"/>
   <path
       android:pathData="M18,22.75A4.75,4.75 0,1 1,22.75 18,4.754 4.754,0 0,1 18,22.75ZM18,14.75A3.25,3.25 0,1 0,21.25 18,3.256 3.256,0 0,0 18,14.75Z"
-      android:fillColor="#09f"/>
+      android:fillColor="?attr/colorSecondary"/>
 </vector>

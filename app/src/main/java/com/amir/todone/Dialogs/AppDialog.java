@@ -2,7 +2,6 @@ package com.amir.todone.Dialogs;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +16,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.amir.todone.R;
 
-public class CustomDialog extends DialogFragment {
+public class AppDialog extends DialogFragment {
 
     public interface onTextResult {
         void textResult(String text);
@@ -43,7 +42,7 @@ public class CustomDialog extends DialogFragment {
 
     String title, massage, inputText, inputPlaceHolder, inputHint, dialogHint, text_btnOk, text_btnCancel, text_btnNatural, text_checkbox;
 
-    public CustomDialog(Context context) {
+    public AppDialog(Context context) {
         this.context = context;
     }
 
@@ -59,7 +58,7 @@ public class CustomDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_MaterialComponents_BottomSheetDialog);
         View view = requireActivity().getLayoutInflater().inflate(R.layout.dialog_layout, null);
 
-        txtTitle = view.findViewById(R.id.txtDialogTitle);
+        txtTitle = view.findViewById(R.id.txtDCategoryTitle);
         txtTitle.setVisibility(View.GONE);
         txtMassage = view.findViewById(R.id.txtDialogMassage);
         txtMassage.setVisibility(View.GONE);
@@ -111,6 +110,10 @@ public class CustomDialog extends DialogFragment {
                 @Override
                 public void onClick(View v) {
                     btnOkListener.onClick(v);
+                    if (has_dialogInput)
+                        onTextResult.textResult(edtDialogInput.getText().toString().trim());
+                    if (has_checkBox)
+                        onCheckResult.checkResult(checkBox.isChecked());
                     dismiss();
                 }
             });
@@ -212,11 +215,4 @@ public class CustomDialog extends DialogFragment {
         }
     }
 
-    @Override
-    public void onDismiss(@NonNull DialogInterface dialog) {
-        super.onDismiss(dialog);
-        if (has_dialogInput)
-            onTextResult.textResult(edtDialogInput.getText().toString().trim());
-            onCheckResult.checkResult(checkBox.isChecked());
-    }
 }

@@ -1,7 +1,23 @@
 <resources>
     <string name="app_name">To Done</string>
-    <string name="app_name_title">To <font color='#FF0099FF'>Do</font>ne</string>
+    <string name="app_name_title">To Done</string>
     <string name="add_button">add</string>
     <string name="press_once_again_to_exit">press once again to exit</string>
+
+
+    <string name="tableName_Tasks" translatable="false">Tasks</string>
+    <string name="tableName_Categories" translatable="false">Categories</string>
+    <string name="category_Name" translatable="false">categoryName</string>
+    <string name="category_Count" translatable="false">categoryCount</string>
+    <string name="task_text" translatable="false">taskText</string>
+    <string name="task_isDone" translatable="false">taskIsDone</string>
+    <string name="task_Category_id" translatable="false">taskCategoryId</string>
+    <string name="task_Date" translatable="false">taskDate</string>
+    <string name="task_Time" translatable="false">taskTime</string>
+    <string name="task_subTasks_Count" translatable="false">taskSubTasksCount</string>
+    <string name="subTask_name" translatable="false">subTaskName</string>
+    <string name="subTask_isDone" translatable="false">subTaskIsDone</string>
+    <string name="subTask_Task_id" translatable="false">subTaskTaskId</string>
+    <string name="tableName_SubTasks">SubTasks</string>
 
 </resources>
