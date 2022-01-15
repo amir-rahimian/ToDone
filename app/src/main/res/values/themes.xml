@@ -62,6 +62,18 @@
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
+    <style name="textStyle.mainHomeTitle.collapsed" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="textStyle.mainHomeTitle.expended" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorPrimaryVariant</item>
+    </style>
+
     <style name="textStyle.homeTitles.counter" parent="Widget.AppCompat.TextView">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>

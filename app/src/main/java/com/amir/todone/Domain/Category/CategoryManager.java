@@ -39,16 +39,6 @@ public class CategoryManager {
         return Da.getInstance(context).getCategoryTasks(category);
     }
 
-    public void notifyTaskAdd(Category category){
-        category.setTaskCount(category.getTaskCount()+1);
-        Da.getInstance(context).editCategoryCount(category,category.getTaskCount());
-    }
-
-    public void notifyTaskDeleted(Category category){
-        category.setTaskCount(category.getTaskCount()-1);
-        Da.getInstance(context).editCategoryCount(category,category.getTaskCount());
-    }
-
     public void deleteCategory(Category category , boolean deleteItsTasks){
         Da.getInstance(context).deleteCategory(category);
         if (deleteItsTasks){

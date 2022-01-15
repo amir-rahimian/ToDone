@@ -15,6 +15,7 @@
     <string name="task_Date" translatable="false">taskDate</string>
     <string name="task_Time" translatable="false">taskTime</string>
     <string name="task_subTasks_Count" translatable="false">taskSubTasksCount</string>
+    <string name="task_doneSubTasks_Count" translatable="false">taskDoneSubTasksCount</string>
     <string name="subTask_name" translatable="false">subTaskName</string>
     <string name="subTask_isDone" translatable="false">subTaskIsDone</string>
     <string name="subTask_Task_id" translatable="false">subTaskTaskId</string>

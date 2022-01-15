@@ -1,40 +1,50 @@
 package com.amir.todone.Domain.Task;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Task {
+public class Task implements Serializable {
 
     private String id;
     private String taskText;
-    private boolean is_Done;
+    private boolean isDone;
     private String category_id;
     private String date ;
     private String time;
     private int subtasks_count;
+    private int doneSubtasks_count;
     private List<SubTask> subtasks;
 
     public Task(String taskText,String category_id, String date, String time, List<SubTask> subtasks) {
         this.id = null;
         this.taskText = taskText;
-        this.is_Done = false;
+        this.isDone = false;
         this.category_id = category_id;
         this.date = date;
         this.time = time;
         this.subtasks= subtasks;
         this.subtasks_count = subtasks.size();
+        this.doneSubtasks_count = 0;
     }
 
-    public Task(String id, String taskText, boolean is_Done, String category_id, String date, String time, List<SubTask> subtasks) {
+    public Task(String id, String taskText, boolean isDone, String category_id, String date, String time, List<SubTask> subtasks, int doneSubtasks_count) {
         this.id = id;
         this.taskText = taskText;
-        this.is_Done = is_Done;
+        this.isDone = isDone;
         this.category_id = category_id;
         this.date = date;
         this.time = time;
-        this.subtasks_count = subtasks.size();
         this.subtasks = subtasks;
+        this.subtasks_count = subtasks.size();
+        this.doneSubtasks_count = doneSubtasks_count;
     }
 
+    public void incrementDoneSubtasks_count() {
+        this.doneSubtasks_count++;
+    }
+    public void decrementDoneSubtasks_count() {
+        this.doneSubtasks_count--;
+    }
     public String getId() {
         return id;
     }
@@ -43,12 +53,16 @@ public class Task {
         this.id = id;
     }
 
+    public int getDoneSubtasks_count() {
+        return doneSubtasks_count;
+    }
+
     public String getTaskText() {
         return taskText;
     }
 
-    public boolean is_Done() {
-        return is_Done;
+    public boolean isDone() {
+        return isDone;
     }
 
     public String getCategory_id() {
@@ -76,7 +90,7 @@ public class Task {
     }
 
     public void set_Done(boolean is_Done) {
-        this.is_Done = is_Done;
+        this.isDone = is_Done;
     }
 
     public void setCategory_id(String category_id) {

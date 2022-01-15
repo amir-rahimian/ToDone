@@ -18,123 +18,148 @@ public class SQLite {
     SQLiteDatabase myDataBase;
 
     //constructor
-    public SQLite(Context context){
-        myDataBase = context.openOrCreateDatabase("database.db",0,null);
+    public SQLite(Context context) {
+        myDataBase = context.openOrCreateDatabase("database.db", 0, null);
     }
 
     //create
     public void createTable(String tableName, FieldMap columns, FieldMap foreignIds) {
-        createTable(tableName,columns,foreignIds,true);
+        createTable(tableName, columns, foreignIds, true);
     }
-    public void createTable(String tableName, FieldMap columns , FieldMap foreignIds , boolean isIdUnique) {
+
+    public void createTable(String tableName, FieldMap columns, FieldMap foreignIds, boolean isIdUnique) {
         StringBuilder sb = new StringBuilder("CREATE TABLE IF NOT EXISTS ");
         sb.append(tableName).append(" ( ");
-        if(isIdUnique)
+        if (isIdUnique)
             sb.append("id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,");
         else
             sb.append("id INTEGER,");
         Set<String> columnKeys = columns.keySet();
-        for (String key:columnKeys)
+        for (String key : columnKeys)
             sb.append(key).append(" ").append(columns.get(key)).append(",");
         if (foreignIds != null) {
             Set<String> foreignKeys = foreignIds.keySet();
             for (String key : foreignKeys)
                 sb.append(key).append(" ").append(foreignIds.get(key)).append(",");
         }
-        sb.deleteCharAt(sb.length()-1);
+        sb.deleteCharAt(sb.length() - 1);
         sb.append(")");
-        Log.e("Q : " , sb.toString());
+        Log.e("Q : ", sb.toString());
         myDataBase.execSQL(sb.toString());
     }
 
     //insert
-    public String insert(String tableName,FieldMap data){
-        StringBuilder sb = new StringBuilder("INSERT INTO " + tableName+ " ( ");
+    public String insert(String tableName, FieldMap data) {
+        StringBuilder sb = new StringBuilder("INSERT INTO " + tableName + " ( ");
         Set<String> keys = data.keySet();
-        for (String key:keys){
+        for (String key : keys) {
             sb.append(key).append(", ");
         }
-        sb.deleteCharAt(sb.length()-2);
+        sb.deleteCharAt(sb.length() - 2);
         sb.append(" ) VALUES ( ");
         Collection<String> values = data.values();
-        for (String val:values)
-            sb.append("'").append(val.replace("'","''")).append("', ");
-        sb.deleteCharAt(sb.length()-2);
+        for (String val : values)
+            sb.append("'").append(val.replace("'", "''")).append("', ");
+        sb.deleteCharAt(sb.length() - 2);
         sb.append(")");
         myDataBase.execSQL(sb.toString());
-        Cursor c = myDataBase.rawQuery("select last_insert_rowid()",null);
+        Cursor c = myDataBase.rawQuery("select last_insert_rowid()", null);
         c.moveToNext();
         return c.getString(c.getColumnIndexOrThrow("last_insert_rowid()"));
     }
 
     //update
-    public void update(String tableName, Field data, Field filter){
+    public void update(String tableName, Field data, Field filter) {
         String sb = "UPDATE " + tableName + " SET " + data.getKey() + " = '" + data.getValue() + "'" +
                 " WHERE " + filter.getKey() + " = '" + filter.getValue() + "'";
         myDataBase.execSQL(sb);
-    };
+    }
+
+    ;
 
     //increment by num
-    public void incrementBy(int increment, String column, String tableName, Field filter){
-        String sb = "UPDATE " + tableName + " SET " + column + " = " + column + " + " + increment +
+    public void incrementBy(int increment, String column, String tableName, Field filter) {
+        String sb = "UPDATE " + tableName + " SET " + column + " = " + column + ((increment<0)?" - " +(-1*increment):" + "+ + increment)+
                 " WHERE " + filter.getKey() + " = '" + filter.getValue() + "'";
         myDataBase.execSQL(sb);
-    };
+    }
+
+    ;
 
     //select
-    public Cursor select(String tableName, List<String> projection, Field filter, String order, String limit){
+    public Cursor select(String tableName, List<String> projection, Field filter1, boolean is1_forNot, Field filter2, boolean is2_forNot, boolean is_and, String order, String limit) {
         StringBuilder sb = new StringBuilder();
-        if (projection!=null && projection.size() != 0){
-        for (String a :
-                projection) {
-            sb.append(a).append(", ");
-        }
-            sb.deleteCharAt(sb.length()-2);
-        }
-        else {
+        if (projection != null && projection.size() != 0) {
+            for (String a :
+                    projection) {
+                sb.append(a).append(", ");
+            }
+            sb.deleteCharAt(sb.length() - 2);
+        } else {
             sb.append("*");
         }
         sb = new StringBuilder("SELECT " + sb.toString() + " FROM " + tableName);
-        if (filter != null)
-            sb.append(" WHERE ").append(filter.getKey()).append(" LIKE '").append(filter.getValue()).append("' ");
 
-        if (order!=null)
-        sb.append(" ORDER BY ").append(order);
+        if (filter1 != null) {
+            sb.append(" WHERE ").append(filter1.getKey());
+            if (is1_forNot) sb.append(" NOT LIKE '");else sb.append(" LIKE '");
+            sb.append(filter1.getValue()).append("' ");
+        }
+        if (filter1 != null && filter2 != null)
+            if (is_and) sb.append(" AND ");
+            else sb.append(" OR ");
+        if (filter2 != null) {
+            sb.append(filter2.getKey());
+            if (is2_forNot) sb.append(" NOT LIKE '");else sb.append(" LIKE '");
+            sb.append(filter2.getValue()).append("' ");
+        }
+        if (order != null)
+            sb.append(" ORDER BY ").append(order);
 
-        if (limit!=null)
+        if (limit != null)
             sb.append(" LIMIT ").append(limit);
 
         Cursor cursor;
         try {
-            cursor = myDataBase.rawQuery(sb.toString(),null);
-        }catch (Exception e){
-            Log.e("Error",e.getMessage());
+            cursor = myDataBase.rawQuery(sb.toString(), null);
+        } catch (Exception e) {
+            Log.e("Error", e.getMessage());
             return null;
         }
-        Log.e("SELECT" , sb.toString());
-        return cursor ;
+        Log.e("SELECT", sb.toString());
+        return cursor;
     }
-    public Cursor select(String tableName, List<String> projection, Field filter, String order) {
-        return select(tableName,projection,filter,order,null);
+    public Cursor select(String tableName, List<String> projection, Field filter1, boolean is1_forNot, Field filter2, boolean is2_forNot, boolean is_and, String order) {
+        return select(tableName, projection, filter1, is1_forNot, filter2, is2_forNot, is_and, order, null);
     }
-    public Cursor select(String tableName, List<String> projection, Field filter) {
-        return select(tableName,projection,filter,null,null);
+    public Cursor select(String tableName, List<String> projection, Field filter1, boolean is1_forNot, Field filter2, boolean is2_forNot, boolean is_and) {
+        return select(tableName, projection, filter1, is1_forNot, filter2, is2_forNot, is_and, null);
     }
-    public Cursor select(String tableName, List<String> projection) {
-        return select(tableName,projection,null,null,null);
+    public Cursor select(String tableName, Field filter1, boolean is1_forNot, Field filter2, boolean is2_forNot, boolean is_and) {
+        return select(tableName, null, filter1, is1_forNot, filter2, is2_forNot, is_and, null);
     }
-    public Cursor select(String tableName) {
-        return select(tableName,null,null,null,null);
+    public Cursor select(String tableName, List<String> projection, Field filter, boolean is_forNot){
+        return select(tableName, projection,filter, is_forNot, null, false, false);
+    }
+    public Cursor select(String tableName, Field filter, boolean is_forNot){
+        return select(tableName, filter, is_forNot, null, false, false);
+    }
+    public Cursor select(String tableName){
+        return select(tableName, null, null, false, null, false, false, null, null);
     }
 
     //get count
-    public int getCount(String tableName, Field filter){
-        Cursor cursor = select(tableName,null,filter);
+    public int getCount(String tableName, Field filter , boolean is_fotNot) {
+        Cursor cursor = select(tableName, filter,is_fotNot);
 
-        return cursor!=null?cursor.getCount():0;
+        return cursor != null ? cursor.getCount() : 0;
+    }
+    public int getCount(String tableName) {
+
+        return getCount(tableName,null,false);
     }
     //delete
-    public void delete(String tableName,Field filter){
+    public void delete(String tableName, Field filter) {
         myDataBase.execSQL("DELETE FROM " + tableName + " WHERE " + filter.getKey() + "= '" + filter.getValue() + "'");
     }
 
@@ -153,11 +178,12 @@ public class SQLite {
 //    }
 
     //truncate
-    public void truncate(String tableName){
+    public void truncate(String tableName) {
         myDataBase.execSQL("DELETE FROM " + tableName);
     }
+
     //drop
-    public void drop(String tableName){
+    public void drop(String tableName) {
         myDataBase.execSQL("DROP TABLE" + tableName);
     }
 }

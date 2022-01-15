@@ -48,7 +48,33 @@ public class TaskManager {
     public List<Task> geTomorrowTasks(){
         return geTaskByDate(new DateManager(Calendar.getInstance()).getTomorrowDate());
     }
-//    public List<Task> getOtherTasks(){
-//
-//    }
+
+    public List<Task> geTaskByDateNot(String notDate1 , String notDate2){
+        return Da.getInstance(context).getTaskByDate(notDate1,true,notDate2,true,true);
+    }
+    public List<Task> geTaskByDateNot(String notDate){
+        return Da.getInstance(context).getTaskByDate(notDate,true);
+    }
+
+    public List<Task> geOtherTasks(){
+        return geTaskByDateNot(new DateManager(Calendar.getInstance()).getTodayDate(),new DateManager(Calendar.getInstance()).getTomorrowDate());
+    }
+
+    public void taskDone(Task task) {
+        task.set_Done(true);
+        Da.getInstance(context).doneTask(task);
+    }
+    public void taskUnDone(Task task){
+        task.set_Done(false);
+        Da.getInstance(context).unDoneTask(task);
+    }
+    public boolean subTaskDone(SubTask subTask){
+        subTask.set_Done(true);
+        return Da.getInstance(context).doneSubTask(subTask);
+    }
+    public boolean subTaskUnDone(SubTask subTask){
+        subTask.set_Done(false);
+        return Da.getInstance(context).ubDoneSubTask(subTask);
+    }
+
 }

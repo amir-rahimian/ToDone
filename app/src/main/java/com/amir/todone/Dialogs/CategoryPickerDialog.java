@@ -140,7 +140,7 @@ public class CategoryPickerDialog extends DialogFragment {
 
     private void editCategory(int position) {
         // TODo : edit
-        AppDialog appDialog = new AppDialog(context);
+        AppDialog appDialog = new AppDialog();
         appDialog.setTitle("Edit category");
         appDialog.setMassage("change your category name");
         appDialog.setInput(categoryList.get(position).getName(), "Category name", null,
@@ -155,7 +155,7 @@ public class CategoryPickerDialog extends DialogFragment {
     }
 
     private void deleteCategory(int position) {
-        AppDialog appDialog = new AppDialog(context);
+        AppDialog appDialog = new AppDialog();
         appDialog.setTitle("Delete Category");
         appDialog.setMassage("Are you sure you want to delete " + categoryList.get(position).getName() + " Category ?");
         appDialog.setCheckBox("Also delete its Task", false,

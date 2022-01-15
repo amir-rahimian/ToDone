@@ -12,10 +12,10 @@
     <item android:id="@+id/placeholder1"
         android:title=""/>
 
-    <item
+
+        <item
         android:id="@+id/Calender"
         android:icon="@drawable/ic_calendar_selector"
         android:title="Calender"
         />
-
 </menu>

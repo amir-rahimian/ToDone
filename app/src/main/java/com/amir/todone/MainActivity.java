@@ -9,10 +9,6 @@ import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -103,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         bottomNav.setBackground(null);
         bottomNav.setItemRippleColor(null);
         bottomNav.getMenu().getItem(1).setEnabled(false);
+        bottomNav.getMenu().getItem(2).setEnabled(false);
         bottomNav.setOnItemSelectedListener(this);
         bottomNav.setSelectedItemId(R.id.Home);
 
@@ -171,6 +168,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     private void showBottomSheetDialog() {
         AddTaskBottomDialog taskBottomDialog = AddTaskBottomDialog.newInstance();
+        taskBottomDialog.setListener(new AddTaskBottomDialog.BottomSheetDialogListener() {
+            @Override
+            public void onDismiss() {
+                homeFragment.reLoadTasks();
+            }
+        });
         taskBottomDialog.show(getSupportFragmentManager(), "add_task_dialog_fragment");
     }
 
@@ -180,10 +183,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         if (item.getItemId() == R.id.Home) { // Home
             if (bottomNav.getSelectedItemId() != R.id.Home)
                 fm.beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
-        } else { // Calender
+        }
+        else { // Calender
             if (bottomNav.getSelectedItemId() != R.id.Calender)
                 fm.beginTransaction().replace(R.id.fragment_container, calenderFragment).commit();
         }
+        // Todo : add Calender view
         return true;
     }
 

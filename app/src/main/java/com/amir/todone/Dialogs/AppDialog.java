@@ -13,8 +13,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.amir.todone.R;
+
+import java.util.Objects;
 
 public class AppDialog extends DialogFragment {
 
@@ -42,15 +45,15 @@ public class AppDialog extends DialogFragment {
 
     String title, massage, inputText, inputPlaceHolder, inputHint, dialogHint, text_btnOk, text_btnCancel, text_btnNatural, text_checkbox;
 
-    public AppDialog(Context context) {
-        this.context = context;
+    public AppDialog() {
+
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        this.context = context;
     }
-
 
     @NonNull
     @Override
@@ -215,4 +218,8 @@ public class AppDialog extends DialogFragment {
         }
     }
 
+    @Override
+    public void show(@NonNull FragmentManager manager, @Nullable String tag) {
+        super.show(manager, tag);
+    }
 }

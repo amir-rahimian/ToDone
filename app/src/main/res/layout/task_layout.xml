@@ -10,11 +10,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginRight="8dp"
+        android:layout_marginBottom="4dp"
         android:backgroundTint="?attr/colorOnSecondary"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -28,10 +30,10 @@
 
             <LinearLayout
                 android:id="@+id/subTasksLayout"
-                android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/details" />
@@ -198,10 +200,9 @@
                 android:textColor="?attr/colorOnPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/taskCheckbox"
                 app:layout_constraintEnd_toStartOf="@+id/more"
-                app:layout_constraintStart_toEndOf="@+id/taskCheckbox"
-                app:layout_constraintTop_toTopOf="@+id/taskCheckbox" />
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
+                app:layout_constraintTop_toTopOf="@+id/more" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline2"

@@ -1,6 +1,7 @@
 package com.amir.todone.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.util.Log;
@@ -15,24 +16,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amir.todone.Dialogs.AppDialog;
 import com.amir.todone.Domain.Category.Category;
 import com.amir.todone.Domain.Category.CategoryManager;
 import com.amir.todone.Domain.Task.SubTask;
 import com.amir.todone.Domain.Task.Task;
+import com.amir.todone.Domain.Task.TaskManager;
 import com.amir.todone.Objects.DateManager;
 import com.amir.todone.R;
+import com.amir.todone.ShowTasksActivity;
 
 import java.util.Calendar;
 import java.util.List;
 
 public class TaskRvAdapter extends RecyclerView.Adapter<TaskVH> {
 
-    interface TaskListener {
+    public interface TaskListener {
         void onChangeTaskDone(int position, boolean isChecked);
+
         void onTaskClick(int position);
+
         void onCategoryClick(int position);
     }
 
@@ -53,29 +60,7 @@ public class TaskRvAdapter extends RecyclerView.Adapter<TaskVH> {
     }
 
     private void setListener(TaskListener taskListener) {
-        this.taskListener = new TaskListener() {
-            @Override
-            public void onChangeTaskDone(int position, boolean isChecked) {
-                if (taskListener != null)
-                    taskListener.onChangeTaskDone(position, isChecked);
-                Log.e("Adapter", tasks.get(position).getTaskText() + " Task Changed to" + isChecked);
-            }
-
-            @Override
-            public void onTaskClick(int position) {
-                if (taskListener != null)
-                    taskListener.onTaskClick(position);
-                Log.e("Adapter", tasks.get(position).getTaskText() + " Task clicked");
-            }
-
-            @Override
-            public void onCategoryClick(int position) {
-                if (taskListener != null)
-                    taskListener.onCategoryClick(position);
-                Category category = CategoryManager.getInstance(context).getCategoryById(tasks.get(position).getCategory_id());
-                Log.e("Adapter", category.getName() + " Category clicked");
-            }
-        };
+        this.taskListener = taskListener;
     }
 
     public void setShow_category(boolean show_category) {
@@ -98,6 +83,7 @@ public class TaskRvAdapter extends RecyclerView.Adapter<TaskVH> {
     public void onBindViewHolder(@NonNull TaskVH holder, int position) {
         Task task = tasks.get(position);
         holder.getTxtTaskText().setText(task.getTaskText());
+        holder.getTaskCheckbox().setChecked(task.isDone());
         if (isShow_category) {
             Category category = CategoryManager.getInstance(context).getCategoryById(task.getCategory_id());
             if (category != null)
@@ -112,7 +98,7 @@ public class TaskRvAdapter extends RecyclerView.Adapter<TaskVH> {
         } else
             holder.getDateBadge().setVisibility(View.GONE);
         if (!task.getTime().equals("-1")) {
-            if (new DateManager(Calendar.getInstance()).isTimePast(task.getTime())) {
+            if (new DateManager(Calendar.getInstance()).isTimePast(task.getDate(), task.getTime())) {
                 holder.getTxtTime().setTextColor(context.getResources().getColor(R.color.error));
                 holder.getImgClock().setColorFilter(context.getResources().getColor(R.color.error), PorterDuff.Mode.SRC_IN);
             }
@@ -121,22 +107,34 @@ public class TaskRvAdapter extends RecyclerView.Adapter<TaskVH> {
             holder.getTimeBadge().setVisibility(View.GONE);
         if (task.getSubtasks_count() > 0) {
             List<SubTask> subTasks = task.getSubtasks();
-            int subDone = 0;
             for (SubTask sub : subTasks) {
-                if (sub.is_Done()) subDone++;
                 View subAddView = View.inflate(context, R.layout.subtask_layout, null);
                 CheckBox checkBox = subAddView.findViewById(R.id.subtaskCheckbox);
                 checkBox.setText(sub.getText());
+                checkBox.setChecked(sub.isDone());
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        Toast.makeText(context, sub.getText() + " changed to " + isChecked, Toast.LENGTH_SHORT).show();
+                        Log.e("Sub", sub.getText() + " changed to " + isChecked);
+                        if (isChecked) {
+                            task.incrementDoneSubtasks_count();
+                            if(TaskManager.getInstance(context).subTaskDone(sub)){
+                                holder.getTaskCheckbox().setChecked(true);
+                                    TaskManager.getInstance(context).taskDone(task);
+                            }
+                        } else{
+                            task.decrementDoneSubtasks_count();
+                            if (TaskManager.getInstance(context).subTaskUnDone(sub)){
+                                holder.getTaskCheckbox().setChecked(false);
+                                TaskManager.getInstance(context).taskUnDone(task);
+                            }
+                        }
+                        holder.getTxtSubTasksState().setText(task.getDoneSubtasks_count() + "/" + subTasks.size());
                     }
                 });
                 holder.getSubTasksLayout().addView(subAddView);
             }
-            holder.getTxtSubTasksState().setText(subDone + "/" + subTasks.size());
-
+            holder.getTxtSubTasksState().setText(task.getDoneSubtasks_count() + "/" + subTasks.size());
         } else {
             holder.getImgShowSubTask().setVisibility(View.GONE);
             holder.getTxtSubTasksState().setVisibility(View.GONE);
@@ -155,7 +153,7 @@ class TaskVH extends RecyclerView.ViewHolder {
     private CardView taskCard;
     private CheckBox taskCheckbox;
     private TextView txtTaskText, txtSubTasksState, txtCategory, txtDate, txtTime;
-    private ImageView imgShowSubTask , imgClock;
+    private ImageView imgShowSubTask, imgClock;
     private CardView categoryBadge, dateBadge, timeBadge;
     private LinearLayout subTasksLayout;
 
@@ -190,7 +188,23 @@ class TaskVH extends RecyclerView.ViewHolder {
             } else {
                 txtTaskText.setPaintFlags(0);
             }
-            taskListener.onChangeTaskDone(getAdapterPosition(), isChecked);
+
+        });
+        taskCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isChecked = taskCheckbox.isChecked();
+                taskListener.onChangeTaskDone(getAdapterPosition(), isChecked);
+                for (int i = 0; i < subTasksLayout.getChildCount(); i++) {
+                    CheckBox checkBox = subTasksLayout.getChildAt(i).findViewById(R.id.subtaskCheckbox);
+                    if (isChecked) {
+                        if (!checkBox.isChecked()) checkBox.setChecked(true);
+                    }else {
+                        if (checkBox.isChecked()) checkBox.setChecked(false);
+                    }
+
+                }
+            }
         });
 
         imgShowSubTask.setOnClickListener(v -> {

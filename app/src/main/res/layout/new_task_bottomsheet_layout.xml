@@ -240,6 +240,7 @@
                         android:id="@+id/timeOp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:alpha=".5"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:focusable="true"
