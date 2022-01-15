@@ -56,7 +56,7 @@ public class TaskManager {
         return Da.getInstance(context).getTaskByDate(notDate,true);
     }
 
-    public List<Task> geOtherTasks(){
+    public List<Task> getOtherTasks(){
         return geTaskByDateNot(new DateManager(Calendar.getInstance()).getTodayDate(),new DateManager(Calendar.getInstance()).getTomorrowDate());
     }
 

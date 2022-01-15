@@ -123,13 +123,12 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (start == 0 && before == 0 && count > 0) {
-                    btnAdd.setEnabled(true);
-                    btnAdd.animate().alpha(1.0f);
-                }
-                if (start == 0 && before > 0 && count == 0) {
+                if (s.toString().trim().matches("")){
                     btnAdd.setEnabled(false);
                     btnAdd.animate().alpha(0.5f);
+                }else {
+                    btnAdd.setEnabled(true);
+                    btnAdd.animate().alpha(1.0f);
                 }
             }
 
@@ -295,7 +294,7 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
     }
 
     private void addTask() {
-        String task = edtTaskText.getText().toString();
+        String task = edtTaskText.getText().toString().trim();
         List<SubTask> subTasks = subTaskData();
         if (taskDate != null)
             if (new DateManager(Calendar.getInstance()).isDatePast(taskDate)) {
@@ -334,7 +333,7 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
         for (int i = 0; i < subList.getChildCount(); i++) {
             if (subList.getChildAt(i) != null) {
                 EditText editText = subList.getChildAt(i).findViewById(R.id.edtAddCategory);
-                if (!editText.getText().toString().matches("")) {
+                if (!editText.getText().toString().trim().matches("")) {
                     subTasks.add(new SubTask(editText.getText().toString().trim()));
                 }
             }
