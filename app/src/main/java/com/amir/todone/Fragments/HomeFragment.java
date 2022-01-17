@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amir.todone.Adapters.TaskRvAdapter;
 import com.amir.todone.Dialogs.AppDialog;
@@ -25,6 +26,7 @@ import com.amir.todone.Domain.Task.Task;
 import com.amir.todone.Domain.Task.TaskManager;
 import com.amir.todone.R;
 import com.amir.todone.ShowTasksActivity;
+import com.amir.todone.TaskActivity;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
@@ -154,6 +156,9 @@ public class HomeFragment extends Fragment {
             have[2] = true;
             if (have[0] || have[1])
                 othersTitle.setVisibility(View.VISIBLE);
+            else {
+                othersTitle.setVisibility(View.GONE);
+            }
             setupOthers();
         }
         if (have[0] || have[1] || have[2]) {
@@ -188,6 +193,7 @@ public class HomeFragment extends Fragment {
             if (have[0]) {
                 have[0] = false;
                 todayTitle.setVisibility(View.GONE);
+                todayAdapter.notifyDataSetChanged();
             }
         }
 
@@ -204,6 +210,7 @@ public class HomeFragment extends Fragment {
             if (have[1]) {
                 have[1] = false;
                 tomorrowTitle.setVisibility(View.GONE);
+                tomorrowAdapter.notifyDataSetChanged();
             }
         }
 
@@ -212,16 +219,27 @@ public class HomeFragment extends Fragment {
                 otherAdapter.notifyDataSetChanged();
             } else {
                 have[2] = true;
-                othersTitle.setVisibility(View.VISIBLE);
+                if (have[0] || have[1])
+                    othersTitle.setVisibility(View.VISIBLE);
+                else {
+                    othersTitle.setVisibility(View.GONE);
+                }
                 setupOthers();
             }
         } else {
             if (have[2]) {
                 have[2] = false;
                 othersTitle.setVisibility(View.GONE);
+                otherAdapter.notifyDataSetChanged();
             }
         }
-
+        if (have[0] || have[1] || have[2]) {
+            setTitle("Your Tasks");
+            addNewLayout.setVisibility(View.GONE);
+        } else {
+            setTitle("You have no Task !");
+            addNewLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setupToday() {
@@ -232,35 +250,16 @@ public class HomeFragment extends Fragment {
         todayAdapter.setTaskListener(new TaskRvAdapter.TaskListener() {
             @Override
             public void onChangeTaskDone(int position, boolean isChecked) {
-                if (isChecked) {
-                    TaskManager.getInstance(getContext()).taskDone(todayTasks.get(position));
-                } else {
-                    TaskManager.getInstance(getContext()).taskUnDone(todayTasks.get(position));
-                }
             }
 
             @Override
             public void onTaskClick(int position) {
-                // Todo : Do Something
             }
 
             @Override
             public void onCategoryClick(int position) {
                 Category category = CategoryManager.getInstance(getContext()).getCategoryById(todayTasks.get(position).getCategory_id());
-                AppDialog dialog = new AppDialog();
-                dialog.setTitle(category.getName());
-                dialog.setMassage("Do you want to see all tasks of this category?");
-                dialog.setCancelButton("No", null);
-                dialog.setOkButton("Yes", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getContext(), ShowTasksActivity.class);
-                        intent.putExtra("is_forCategory", true);
-                        intent.putExtra("category", category);
-                        startActivity(intent);
-                    }
-                });
-                dialog.show(requireActivity().getSupportFragmentManager(), "Open category");
+                categoryClick(category);
             }
         });
         todayRV.setAdapter(todayAdapter);
@@ -273,35 +272,16 @@ public class HomeFragment extends Fragment {
         tomorrowAdapter.setTaskListener(new TaskRvAdapter.TaskListener() {
             @Override
             public void onChangeTaskDone(int position, boolean isChecked) {
-                if (isChecked) {
-                    TaskManager.getInstance(getContext()).taskDone(tomorrowTasks.get(position));
-                } else {
-                    TaskManager.getInstance(getContext()).taskUnDone(tomorrowTasks.get(position));
-                }
             }
 
             @Override
             public void onTaskClick(int position) {
-                // Todo : Do Something
             }
 
             @Override
             public void onCategoryClick(int position) {
                 Category category = CategoryManager.getInstance(getContext()).getCategoryById(tomorrowTasks.get(position).getCategory_id());
-                AppDialog dialog = new AppDialog();
-                dialog.setTitle(category.getName());
-                dialog.setMassage("Do you want to see all tasks of this category?");
-                dialog.setCancelButton("No", null);
-                dialog.setOkButton("Yes", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getContext(), ShowTasksActivity.class);
-                        intent.putExtra("is_forCategory", true);
-                        intent.putExtra("category", category);
-                        startActivity(intent);
-                    }
-                });
-                dialog.show(requireActivity().getSupportFragmentManager(), "Open category");
+                categoryClick(category);
             }
         });
         tomorrowRV.setAdapter(tomorrowAdapter);
@@ -314,37 +294,37 @@ public class HomeFragment extends Fragment {
         otherAdapter.setTaskListener(new TaskRvAdapter.TaskListener() {
             @Override
             public void onChangeTaskDone(int position, boolean isChecked) {
-                if (isChecked) {
-                    TaskManager.getInstance(getContext()).taskDone(otherTasks.get(position));
-                } else {
-                    TaskManager.getInstance(getContext()).taskUnDone(otherTasks.get(position));
-                }
             }
 
             @Override
             public void onTaskClick(int position) {
-                // Todo : Do Something
             }
 
             @Override
             public void onCategoryClick(int position) {
                 Category category = CategoryManager.getInstance(getContext()).getCategoryById(otherTasks.get(position).getCategory_id());
-                AppDialog dialog = new AppDialog();
-                dialog.setTitle(category.getName());
-                dialog.setMassage("Do you want to see all tasks of this category?");
-                dialog.setCancelButton("No", null);
-                dialog.setOkButton("Yes", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getContext(), ShowTasksActivity.class);
-                        intent.putExtra("is_forCategory", true);
-                        intent.putExtra("category", category);
-                        startActivity(intent);
-                    }
-                });
-                dialog.show(requireActivity().getSupportFragmentManager(), "Open category");
+                categoryClick(category);
             }
         });
         othersRV.setAdapter(otherAdapter);
     }
+
+
+    private void categoryClick (Category category) {
+        AppDialog dialog = new AppDialog();
+        dialog.setTitle(category.getName());
+        dialog.setMassage("Do you want to see all tasks of this category?");
+        dialog.setCancelButton("No", null);
+        dialog.setOkButton("Yes", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ShowTasksActivity.class);
+                intent.putExtra("is_forCategory", true);
+                intent.putExtra("category", category);
+                startActivity(intent);
+            }
+        });
+        dialog.show(requireActivity().getSupportFragmentManager(), "Open category");
+    }
+
 }

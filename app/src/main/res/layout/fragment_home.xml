@@ -29,14 +29,13 @@
                 app:collapsedTitleGravity="start"
                 app:collapsedTitleTextAppearance="@style/textStyle.mainHomeTitle.collapsed"
                 app:expandedTitleTextAppearance="@style/textStyle.mainHomeTitle.expended"
-                app:contentScrim="?attr/colorPrimary"
                 app:expandedTitleGravity="center_horizontal"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:toolbarId="@+id/toolbar">
+                app:toolbarId="@+id/taskToolbar">
 
 
                 <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
+                    android:id="@+id/taskToolbar"
                     app:layout_collapseMode="pin"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"/>
@@ -232,7 +231,7 @@
             android:textColor="?attr/colorSecondary" />
 
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animationView"
+            android:id="@+id/ConfettiLayout"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginBottom="25dp"

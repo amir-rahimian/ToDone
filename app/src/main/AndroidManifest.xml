@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ToDone">
         <activity
+            android:name=".TaskActivity"
+            android:exported="false" />
+        <activity
             android:name=".ShowTasksActivity"
             android:exported="false" />
         <activity

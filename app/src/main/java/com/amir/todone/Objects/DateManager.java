@@ -86,9 +86,9 @@ public class DateManager {
 
         int ch = calendar.get(Calendar.HOUR_OF_DAY);
         int cm = calendar.get(Calendar.MINUTE);
-        String[] dates = time.split(":");
-        int h = Integer.parseInt(dates[0]);
-        int m = Integer.parseInt(dates[1]);
+        String[] times = time.split(":");
+        int h = Integer.parseInt(times[0]);
+        int m = Integer.parseInt(times[1]);
 
         if (ch > h) {
             return true;

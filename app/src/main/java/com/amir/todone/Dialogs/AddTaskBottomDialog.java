@@ -11,13 +11,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,12 +38,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 public class AddTaskBottomDialog extends BottomSheetDialogFragment {
 
@@ -85,9 +84,9 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
         subList = view.findViewById(R.id.subList);
         addASubtaskOption = view.findViewById(R.id.addASubtaskOption);
         edtTaskText = view.findViewById(R.id.edtTaskText);
-        txtCategorySelected = view.findViewById(R.id.txtCategorySelected);
-        txtDateSelected = view.findViewById(R.id.txtDateSelected);
-        txtTimeSelected = view.findViewById(R.id.txtTimeSelected);
+        txtCategorySelected = view.findViewById(R.id.txtSelectedCategory);
+        txtDateSelected = view.findViewById(R.id.txtSelectedDate);
+        txtTimeSelected = view.findViewById(R.id.txtSelectedTime);
         categoryOp = view.findViewById(R.id.categoryOp);
         dateOp = view.findViewById(R.id.dateOp);
         timeOp = view.findViewById(R.id.timeOp);
@@ -123,10 +122,10 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().matches("")){
+                if (s.toString().trim().matches("")) {
                     btnAdd.setEnabled(false);
                     btnAdd.animate().alpha(0.5f);
-                }else {
+                } else {
                     btnAdd.setEnabled(true);
                     btnAdd.animate().alpha(1.0f);
                 }
@@ -141,12 +140,13 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
         });
 
         addASubtaskOption.setOnClickListener(v -> {
-            Log.e("C", " : " + subList.getChildCount());
             if (subList.getChildCount() < 5) {
                 int emptyTextView = notEmpty();
                 if (emptyTextView == -1) {
-                    View subListAddView = View.inflate(getContext(), R.layout.add_subtask_layout, null);
+                    View subListAddView = View.inflate(getContext(), R.layout.subtask_add_layout, null);
                     EditText sub = subListAddView.findViewById(R.id.edtAddCategory);
+                    CheckBox check = subListAddView.findViewById(R.id.subTaskCheckbox);
+                    check.setVisibility(View.GONE);
                     sub.requestFocus();
                     sub.setOnKeyListener((view1, keycode, keyEvent) -> {
                         if (keycode == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_DOWN)
@@ -173,7 +173,8 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
                     subListAddView.findViewById(R.id.imgDel).setOnClickListener(delView -> {
                         subList.removeView(subListAddView);
                         bottomSheetBehavior.setPeekHeight(bottomSheetBehavior.getPeekHeight() - 200, true);
-                        addASubtaskOption.setVisibility(View.VISIBLE);
+                        if (addASubtaskOption.getVisibility() != View.VISIBLE)
+                            addASubtaskOption.setVisibility(View.VISIBLE);
                     });
                     subList.addView(subListAddView);
                     bottomSheetBehavior.setPeekHeight(bottomSheetBehavior.getPeekHeight() + 200, true);
@@ -194,6 +195,28 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
         });
 
 
+        ////////////////////
+        categoryOp.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                PopupMenu popup = new PopupMenu(getContext(), v);
+                popup.getMenuInflater().inflate(R.menu.edit_delete_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId() == R.id.delete) {
+                            taskCategory = null;
+                            txtCategorySelected.setText("Set");
+                        } else {
+                            categoryOp.callOnClick();
+                        }
+                        return false;
+                    }
+                });
+                popup.show();
+                return false;
+            }
+        });
         categoryOp.setOnClickListener(v -> {
             List<Category> categories = CategoryManager.getInstance(getContext()).getAllCategories();
             new CategoryPickerDialog(getContext(), categories,
@@ -213,7 +236,30 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
                 }
             }, 1000);
         });
-
+        ///////////////////////
+        dateOp.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                PopupMenu popup = new PopupMenu(getContext(), v);
+                popup.getMenuInflater().inflate(R.menu.edit_delete_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId() == R.id.delete) {
+                            taskDate = null;
+                            txtDateSelected.setText("Set");
+                            txtDateSelected.setTextColor(getResources().getColor(R.color.textColor_hint));
+                            timeOp.animate().alpha(0.5f);
+                        } else {
+                            dateOp.callOnClick();
+                        }
+                        return false;
+                    }
+                });
+                popup.show();
+                return false;
+            }
+        });
         dateOp.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                     (DatePickerDialog.OnDateSetListener) (view12, year, month, dayOfMonth) -> {
@@ -248,6 +294,31 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
                     dateOp.setClickable(true);
                 }
             }, 1000);
+        });
+        /////////
+        timeOp.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (timeOp.getAlpha() == 1.0f) {
+                    PopupMenu popup = new PopupMenu(getContext(), v);
+                    popup.getMenuInflater().inflate(R.menu.edit_delete_menu, popup.getMenu());
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            if (item.getItemId() == R.id.delete) {
+                                taskTime = null;
+                                txtTimeSelected.setText("Set");
+                                txtTimeSelected.setTextColor(getResources().getColor(R.color.textColor_hint));
+                            } else {
+                                timeOp.callOnClick();
+                            }
+                            return false;
+                        }
+                    });
+                    popup.show();
+                }
+                return false;
+            }
         });
         timeOp.setOnClickListener(v -> {
             if (timeOp.getAlpha() == 1.0f) {
@@ -287,7 +358,7 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
         for (int i = 0; i < subList.getChildCount(); i++) {
             if (subList.getChildAt(i) != null) {
                 EditText editText = subList.getChildAt(i).findViewById(R.id.edtAddCategory);
-                if (editText.getText().toString().matches("")) return i;
+                if (editText.getText().toString().trim().matches("")) return i;
             }
         }
         return -1;
@@ -334,7 +405,7 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
             if (subList.getChildAt(i) != null) {
                 EditText editText = subList.getChildAt(i).findViewById(R.id.edtAddCategory);
                 if (!editText.getText().toString().trim().matches("")) {
-                    subTasks.add(new SubTask(editText.getText().toString().trim()));
+                    subTasks.add(new SubTask(editText.getText().toString().trim(),false));
                 }
             }
         }

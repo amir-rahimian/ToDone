@@ -45,6 +45,7 @@ public class ShowTasksActivity extends AppCompatActivity {
         txtTaskCount = findViewById(R.id.txtTaskCount);
         tasksRV = findViewById(R.id.RVShowTask);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (getIntent() != null) {
             Bundle intent = getIntent().getExtras();
             if (intent.getBoolean("is_forCategory")) {
@@ -62,52 +63,42 @@ public class ShowTasksActivity extends AppCompatActivity {
                 txtTaskCount.setText(count + " Task" + (count > 1 ? "s" : ""));
                 taskToShow = TaskManager.getInstance(this).getDoneTasks();
             }
+            tasksRV.setLayoutManager(new LinearLayoutManager(this));
+            tasksAdapter = new TaskRvAdapter(this, taskToShow);
+            tasksAdapter.setTaskListener(new TaskRvAdapter.TaskListener() {
+                @Override
+                public void onChangeTaskDone(int position, boolean isChecked) { }
+
+                @Override
+                public void onTaskClick(int position) {
+                }
+
+                @Override
+                public void onCategoryClick(int position) {
+                    Category category = CategoryManager.getInstance(ShowTasksActivity.this).getCategoryById(taskToShow.get(position).getCategory_id());
+                    AppDialog dialog = new AppDialog();
+                    dialog.setTitle(category.getName());
+                    dialog.setMassage("Do you want to see all tasks of this category?");
+                    dialog.setCancelButton("No",null);
+                    dialog.setOkButton("Yes", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(ShowTasksActivity.this, ShowTasksActivity.class);
+                            intent.putExtra("is_forCategory", true);
+                            intent.putExtra("category", category);
+                            startActivity(intent);
+                        }
+                    });
+                    dialog.show(getSupportFragmentManager(),"Open category");
+                }
+            });
+            if (state == activityState.Category)
+                tasksAdapter.setShow_category(false);
+            tasksRV.setAdapter(tasksAdapter);
         } else {
             finish();
         }
-        tasksRV.setLayoutManager(new LinearLayoutManager(this));
-        tasksAdapter = new TaskRvAdapter(this, taskToShow);
-        tasksAdapter.setTaskListener(new TaskRvAdapter.TaskListener() {
-            @Override
-            public void onChangeTaskDone(int position, boolean isChecked) {
-                Log.e("Activity", taskToShow.get(position).getTaskText() + " Task Changed to" + isChecked);
-                if (isChecked) {
-                    TaskManager.getInstance(ShowTasksActivity.this).taskDone(taskToShow.get(position));
-                } else {
-                    TaskManager.getInstance(ShowTasksActivity.this).taskUnDone(taskToShow.get(position));
-                }
-            }
 
-            @Override
-            public void onTaskClick(int position) {
-                Log.e("Activity", taskToShow.get(position).getTaskText() + " Task clicked");
-                // Todo : Do Something
-            }
-
-            @Override
-            public void onCategoryClick(int position) {
-                Category category = CategoryManager.getInstance(ShowTasksActivity.this).getCategoryById(taskToShow.get(position).getCategory_id());
-                Log.e("Activity", category.getName() + " Category clicked");
-                AppDialog dialog = new AppDialog();
-                dialog.setTitle(category.getName());
-                dialog.setMassage("Do you want to see all tasks of this category?");
-                dialog.setCancelButton("No",null);
-                dialog.setOkButton("Yes", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(ShowTasksActivity.this, ShowTasksActivity.class);
-                        intent.putExtra("is_forCategory", true);
-                        intent.putExtra("category", category);
-                        startActivity(intent);
-                    }
-                });
-                dialog.show(getSupportFragmentManager(),"Open category");
-            }
-        });
-        if (state == activityState.Category)
-            tasksAdapter.setShow_category(false);
-        tasksRV.setAdapter(tasksAdapter);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

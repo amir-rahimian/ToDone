@@ -176,7 +176,7 @@
                             app:layout_constraintTop_toTopOf="@+id/imgOp1" />
 
                         <TextView
-                            android:id="@+id/txtCategorySelected"
+                            android:id="@+id/txtSelectedCategory"
                             style="@style/textStyle.hintText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -224,7 +224,7 @@
                             app:layout_constraintTop_toTopOf="@+id/imgOp2" />
 
                         <TextView
-                            android:id="@+id/txtDateSelected"
+                            android:id="@+id/txtSelectedDate"
                             style="@style/textStyle.hintText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -273,7 +273,7 @@
                             app:layout_constraintTop_toTopOf="@+id/imgOp3" />
 
                         <TextView
-                            android:id="@+id/txtTimeSelected"
+                            android:id="@+id/txtSelectedTime"
                             style="@style/textStyle.hintText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -292,7 +292,7 @@
                     style="@style/textStyle.hintTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Set a time for your task \nyou will be notified at this time" />
+                    android:text="Try log press on items for more option :)" />
 
                 <View
                     android:id="@+id/extraSpace"

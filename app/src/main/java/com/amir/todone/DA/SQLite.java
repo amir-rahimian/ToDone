@@ -69,13 +69,20 @@ public class SQLite {
     }
 
     //update
-    public void update(String tableName, Field data, Field filter) {
-        String sb = "UPDATE " + tableName + " SET " + data.getKey() + " = '" + data.getValue() + "'" +
-                " WHERE " + filter.getKey() + " = '" + filter.getValue() + "'";
-        myDataBase.execSQL(sb);
-    }
+    public void update(String tableName, Field filter, Field... data) {
+        StringBuilder sb = new StringBuilder("UPDATE " + tableName + " SET " );
+        String s = "UPDATE " + tableName + " SET "
+                + data[0].getKey() + " = '" + data[0].getValue() + "'" +
 
-    ;
+                " WHERE " + filter.getKey() + " = '" + filter.getValue() + "'";
+        for (Field d :
+                data) {
+           sb.append(d.getKey()).append(" = '").append(d.getValue()).append("',");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        sb.append(" WHERE ").append(filter.getKey()).append(" = '").append(filter.getValue()).append( "'");
+        myDataBase.execSQL(sb.toString());
+    }
 
     //increment by num
     public void incrementBy(int increment, String column, String tableName, Field filter) {

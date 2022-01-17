@@ -7,7 +7,7 @@
         <item name="colorOnPrimary">@color/textColor_light</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/blue</item>
-        <item name="colorSecondaryVariant">@color/textColor_hint</item>
+        <item name="colorSecondaryVariant">@color/error</item>
         <item name="colorOnSecondary">@color/colorSecondary_light</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="m">?attr/colorPrimary</item>
@@ -103,7 +103,7 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textColorHint">?attr/colorPrimaryVariant</item>
-        <item name="android:background">@drawable/task_text_view_background</item>
+        <item name="android:background">@drawable/task_edt_background</item>
     </style>
 
     <style name="editText.addSubTask" parent="Widget.AppCompat.EditText">
@@ -114,7 +114,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textColorHint">?attr/colorPrimaryVariant</item>
-        <item name="android:background">?attr/colorOnSecondary</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="editText.addCategory" parent="Widget.AppCompat.EditText">

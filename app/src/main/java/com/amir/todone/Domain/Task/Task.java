@@ -53,6 +53,14 @@ public class Task implements Serializable {
         this.id = id;
     }
 
+    public void setSubtasks_count(int subtasks_count) {
+        this.subtasks_count = subtasks_count;
+    }
+
+    public void setDoneSubtasks_count(int doneSubtasks_count) {
+        this.doneSubtasks_count = doneSubtasks_count;
+    }
+
     public int getDoneSubtasks_count() {
         return doneSubtasks_count;
     }

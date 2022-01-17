@@ -101,15 +101,15 @@ public class Da {
     //edit a Category
     public void editCategoryName(Category category, String newName) {
         sql.update(getStrRes(R.string.tableName_Categories),
-                new Field(getStrRes(R.string.category_Name), newName),
-                new Field("id", category.getId()));
+                new Field("id", category.getId()), new Field(getStrRes(R.string.category_Name), newName)
+        );
     }
 
     //a task add or deleted that had this category
     public void editCategoryCount(Category category, int newCount) {
         sql.update(getStrRes(R.string.tableName_Categories),
-                new Field(getStrRes(R.string.category_Count), newCount + ""),
-                new Field("id", category.getId()));
+                new Field("id", category.getId()), new Field(getStrRes(R.string.category_Count), newCount + "")
+        );
     }
 
     //delete Category
@@ -289,20 +289,22 @@ public class Da {
 
     public void doneTask(Task task) {
         sql.update(getStrRes(R.string.tableName_Tasks),
-                new Field(getStrRes(R.string.task_isDone), "1"),
-                new Field("id", task.getId()));
+                new Field("id", task.getId()),
+                new Field(getStrRes(R.string.task_isDone), "1")
+        );
     }
 
     public void unDoneTask(Task task) {
         sql.update(getStrRes(R.string.tableName_Tasks),
-                new Field(getStrRes(R.string.task_isDone), "0"),
-                new Field("id", task.getId()));
+                new Field("id", task.getId()),
+                new Field(getStrRes(R.string.task_isDone), "0")
+        );
     }
 
     public boolean doneSubTask(SubTask subTask) {
         sql.update(getStrRes(R.string.tableName_SubTasks),
-                new Field(getStrRes(R.string.subTask_isDone), "1"),
-                new Field("id", subTask.getId()));
+                new Field("id", subTask.getId()), new Field(getStrRes(R.string.subTask_isDone), "1")
+        );
         sql.incrementBy(1, getStrRes(R.string.task_doneSubTasks_Count),
                 getStrRes(R.string.tableName_Tasks),
                 new Field("id", subTask.getTask_id()));
@@ -332,8 +334,8 @@ public class Da {
 
     public boolean ubDoneSubTask(SubTask subTask) {
         sql.update(getStrRes(R.string.tableName_SubTasks),
-                new Field(getStrRes(R.string.subTask_isDone), "0"),
-                new Field("id", subTask.getId()));
+                new Field("id", subTask.getId()), new Field(getStrRes(R.string.subTask_isDone), "0")
+        );
         sql.incrementBy(-1, getStrRes(R.string.task_doneSubTasks_Count),
                 getStrRes(R.string.tableName_Tasks),
                 new Field("id", subTask.getTask_id()));
@@ -343,9 +345,48 @@ public class Da {
         return false;
     }
 
+    public void deleteTask(Task task) {
+        sql.delete(getStrRes(R.string.tableName_Tasks),
+                new Field("id",task.getId()));
+        sql.delete(getStrRes(R.string.tableName_SubTasks),
+                new Field(getStrRes(R.string.subTask_Task_id),task.getId()));
+        sql.incrementBy(-1, getStrRes(R.string.category_Count),
+                getStrRes(R.string.tableName_Categories),
+                new Field("id", task.getCategory_id()));
+    }
+
+    public void deleteSubtask(SubTask subTask) {
+        sql.delete(getStrRes(R.string.tableName_SubTasks),
+                new Field("id",subTask.getId()));
+    }
+
+    public List<String> updateTask(Task task) {
+        List<String> ids = new ArrayList<>();
+        sql.update(getStrRes(R.string.tableName_Tasks),
+                new Field("id",task.getId()),
+                new Field(getStrRes(R.string.task_text),task.getTaskText()),
+                new Field(getStrRes(R.string.task_isDone),task.isDone()?"1":"0"),
+                new Field(getStrRes(R.string.task_Category_id),task.getCategory_id()),
+                new Field(getStrRes(R.string.task_Date),task.getDate()),
+                new Field(getStrRes(R.string.task_Time),task.getTime()),
+                new Field(getStrRes(R.string.task_subTasks_Count),task.getSubtasks_count()+""),
+                new Field(getStrRes(R.string.task_doneSubTasks_Count),task.getDoneSubtasks_count()+"")
+        );
+        ids.add(task.getId());
+        for (SubTask s :
+                task.getSubtasks()) {
+            ids.add(sql.insert(getStrRes(R.string.tableName_SubTasks), new FieldMap(
+                    new Field(getStrRes(R.string.subTask_name), s.getText()),
+                    new Field(getStrRes(R.string.subTask_isDone), s.isDone()?"1":"0"),
+                    new Field(getStrRes(R.string.subTask_Task_id), ids.get(0)))));
+        }
+        return ids;
+    }
+
     // get string
     private String getStrRes(int res) {
         return context.getString(res);
     }
+
 
 }

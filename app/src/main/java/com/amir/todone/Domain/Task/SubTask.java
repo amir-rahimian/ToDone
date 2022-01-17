@@ -9,10 +9,10 @@ public class SubTask implements Serializable {
     private boolean isDone;
     private String task_id;
 
-    public SubTask(String text) {
+    public SubTask(String text,boolean isDone) {
         this.id = null;
         this.text = text;
-        this.isDone = false;
+        this.isDone = isDone;
         this.task_id = null;
     }
 

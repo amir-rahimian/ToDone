@@ -139,7 +139,6 @@ public class CategoryPickerDialog extends DialogFragment {
     }
 
     private void editCategory(int position) {
-        // TODo : edit
         AppDialog appDialog = new AppDialog();
         appDialog.setTitle("Edit category");
         appDialog.setMassage("change your category name");

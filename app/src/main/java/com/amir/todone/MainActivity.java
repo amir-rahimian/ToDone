@@ -166,6 +166,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        homeFragment.reLoadTasks();
+    }
+
     private void showBottomSheetDialog() {
         AddTaskBottomDialog taskBottomDialog = AddTaskBottomDialog.newInstance();
         taskBottomDialog.setListener(new AddTaskBottomDialog.BottomSheetDialogListener() {
