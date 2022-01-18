@@ -19,7 +19,7 @@
         style="@style/editText.addSubTask"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="subtask"
+        android:hint="@string/subtask"
         android:inputType="text"
         android:maxLength="30"
         app:layout_constraintBottom_toBottomOf="parent"

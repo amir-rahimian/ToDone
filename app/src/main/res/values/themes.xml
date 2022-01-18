@@ -36,9 +36,14 @@
         <item name="android:textColor">?attr/colorPrimaryVariant</item>
     </style>
 
-    <style name="textStyle.settings.title" parent="Widget.AppCompat.TextView">
+    <style name="textStyle.settings.smallTitle" parent="Widget.AppCompat.TextView">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">?attr/colorSecondary</item>
+    </style>
+
+    <style name="textStyle.settings.options" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
     <style name="textStyle.appBarTitle" parent="Widget.AppCompat.TextView">

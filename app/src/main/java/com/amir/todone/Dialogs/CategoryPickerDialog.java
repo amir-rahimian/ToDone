@@ -17,10 +17,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.amir.todone.Domain.Category.CategoryManager;
-import com.amir.todone.R;
 import com.amir.todone.Adapters.CategoryListAdapter;
 import com.amir.todone.Domain.Category.Category;
+import com.amir.todone.Domain.Category.CategoryManager;
+import com.amir.todone.R;
 
 import java.util.List;
 
@@ -78,7 +78,7 @@ public class CategoryPickerDialog extends DialogFragment {
                 });
         categoryListView.setAdapter(categoryListAdapter);
         if (categoryList.size() == 0) {
-            txtCategoryHint.setText("No Categories. add one :");
+            txtCategoryHint.setText(R.string.noCat_addOne);
         }
         edtAddCategory.addTextChangedListener(new TextWatcher() {
             @Override
@@ -118,20 +118,20 @@ public class CategoryPickerDialog extends DialogFragment {
             CategoryManager.getInstance(context).createCategory(category);
             categoryList.add(category);
             if (categoryList.size() == 1) {
-                txtCategoryHint.setText("Long press on items inorder to Edit or Delete category or add new one :");
+                txtCategoryHint.setText(R.string.longPress_fot_edit_delete);
             }
             edtAddCategory.setText("");
             categoryListAdapter.notifyDataSetChanged();
             categoryListView.smoothScrollToPosition(categoryList.size() - 1);
         } else {
-            Toast.makeText(getContext(), "You have reached the limit. Delete or edit one", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.category_limit), Toast.LENGTH_SHORT).show();
         }
     }
     private boolean Exists(Category category){
         for (Category c :
                 categoryList) {
             if (c.getName().equals(category.getName())){
-                Toast.makeText(getContext(), "This category already exists!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.cat_exist, Toast.LENGTH_SHORT).show();
                 return true;
             }
         }
@@ -140,37 +140,37 @@ public class CategoryPickerDialog extends DialogFragment {
 
     private void editCategory(int position) {
         AppDialog appDialog = new AppDialog();
-        appDialog.setTitle("Edit category");
-        appDialog.setMassage("change your category name");
+        appDialog.setTitle(getString(R.string.edit_category));
+        appDialog.setMassage(getString(R.string.change_catName));
         appDialog.setInput(categoryList.get(position).getName(), "Category name", null,
                 newName -> {
                     CategoryManager.getInstance(context)
                             .editCategoryName(categoryList.get(position), newName);
                     categoryListAdapter.notifyDataSetChanged();
                 });
-        appDialog.setOkButton("Change", null);
-        appDialog.setHint("Try to use short names with meaning");
+        appDialog.setOkButton(getResources().getString(R.string.change), null);
+        appDialog.setHint(getResources().getString(R.string.try_use_short_names));
         appDialog.show(requireActivity().getSupportFragmentManager(), "EditCategory");
     }
 
     private void deleteCategory(int position) {
         AppDialog appDialog = new AppDialog();
-        appDialog.setTitle("Delete Category");
-        appDialog.setMassage("Are you sure you want to delete " + categoryList.get(position).getName() + " Category ?");
-        appDialog.setCheckBox("Also delete its Task", false,
+        appDialog.setTitle(getString(R.string.delete_category));
+        appDialog.setMassage(getString(R.string.sure_delete_category));
+        appDialog.setCheckBox(getString(R.string.also_del_itsTasks), false,
                 new AppDialog.onCheckResult() {
                     @Override
                     public void checkResult(boolean is_check) {
                         CategoryManager.getInstance(context).deleteCategory(categoryList.get(position), is_check);
                         categoryList.remove(position);
                         if (categoryList.size() == 0) {
-                            txtCategoryHint.setText("No Categories. add one :");
+                            txtCategoryHint.setText(R.string.noCat_addOne);
                         }
                         categoryListAdapter.notifyDataSetChanged();
                     }
                 });
-        appDialog.setOkButton("Delete", null);
-        appDialog.setCancelButton("Cancel", null);
+        appDialog.setOkButton(getString(R.string.delete), null);
+        appDialog.setCancelButton(getString(R.string.cancel), null);
         appDialog.show(requireActivity().getSupportFragmentManager(), "DeleteCategory");
     }
 }

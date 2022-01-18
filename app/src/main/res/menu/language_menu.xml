@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/edit"
-        android:title="@string/edit" />
+        android:id="@+id/en"
+        android:title="@string/en_lang_name" />
     <item
-        android:id="@+id/delete"
-        android:title="@string/delete"/>
+        android:id="@+id/fa"
+        android:title="@string/fa_lang_name"/>
 
 </menu>

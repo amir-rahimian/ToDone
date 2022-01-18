@@ -12,8 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.amir.todone.R;
 import com.amir.todone.Domain.Category.Category;
+import com.amir.todone.R;
 
 import java.util.List;
 

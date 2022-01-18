@@ -1,9 +1,5 @@
 package com.amir.todone;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,6 +11,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.amir.todone.Adapters.CategoryListAdapter;
 import com.amir.todone.Dialogs.AppDialog;
@@ -43,7 +43,7 @@ public class CategoriesActivity extends AppCompatActivity {
         edtAddCategory = findViewById(R.id.edtAddCategory);
         btnAdd = findViewById(R.id.btnAdd);
         setSupportActionBar(toolbar);
-        setTitle("Categories");
+        setTitle(getString(R.string.categories));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -59,7 +59,7 @@ public class CategoriesActivity extends AppCompatActivity {
                             intent.putExtra("category", category);
                             startActivity(intent);
                         }else {
-                            Toast.makeText(CategoriesActivity.this, "No Tasks To See !", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CategoriesActivity.this, getResources().getString(R.string.noTask_toSee), Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override
@@ -74,7 +74,7 @@ public class CategoriesActivity extends AppCompatActivity {
                 });
         categoryListView.setAdapter(categoryListAdapter);
         if (categoryList.size() == 0) {
-            txtCategoryHint.setText("No Categories. add one :");
+            txtCategoryHint.setText(R.string.noCat_addOne);
         }
         edtAddCategory.addTextChangedListener(new TextWatcher() {
             @Override
@@ -108,13 +108,13 @@ public class CategoriesActivity extends AppCompatActivity {
             CategoryManager.getInstance(this).createCategory(category);
             categoryList.add(category);
             if (categoryList.size() == 1) {
-                txtCategoryHint.setText("Long press on items inorder to Edit or Delete category or add new one :");
+                txtCategoryHint.setText(R.string.longPress_fot_edit_delete);
             }
             edtAddCategory.setText("");
             categoryListAdapter.notifyDataSetChanged();
             categoryListView.smoothScrollToPosition(categoryList.size() - 1);
         } else {
-            Toast.makeText(this, "You have reached the limit. Delete or edit one", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.category_limit), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -122,7 +122,7 @@ public class CategoriesActivity extends AppCompatActivity {
         for (Category c :
                 categoryList) {
             if (c.getName().equals(category.getName())){
-                Toast.makeText(this, "This category already exists!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,  R.string.cat_exist, Toast.LENGTH_SHORT).show();
                 return true;
             }
         }
@@ -132,37 +132,37 @@ public class CategoriesActivity extends AppCompatActivity {
     private void editCategory(int position) {
         // TODo : edit
         AppDialog appDialog = new AppDialog();
-        appDialog.setTitle("Edit category");
-        appDialog.setMassage("change your category name");
-        appDialog.setInput(categoryList.get(position).getName(), "Category name", null,
+        appDialog.setTitle(getString(R.string.edit_category));
+        appDialog.setMassage(getString(R.string.change_catName));
+        appDialog.setInput(categoryList.get(position).getName(), getString(R.string.cat_name), null,
                 newName -> {
                     CategoryManager.getInstance(CategoriesActivity.this)
                             .editCategoryName(categoryList.get(position), newName);
                     categoryListAdapter.notifyDataSetChanged();
                 });
-        appDialog.setOkButton("Change", null);
-        appDialog.setHint("Try to use short names with meaning");
+        appDialog.setOkButton(getString(R.string.change), null);
+        appDialog.setHint(getString(R.string.try_use_short_names));
         appDialog.show(getSupportFragmentManager(), "EditCategory");
     }
 
     private void deleteCategory(int position) {
         AppDialog appDialog = new AppDialog();
-        appDialog.setTitle("Delete Category");
-        appDialog.setMassage("Are you sure you want to delete "+categoryList.get(position).getName()+ " Category ?");
-        appDialog.setCheckBox("Also delete its Task", false,
+        appDialog.setTitle(getString(R.string.delete_category));
+        appDialog.setMassage(getString(R.string.sure_delete_category));
+        appDialog.setCheckBox(getString(R.string.also_del_itsTasks), false,
                 new AppDialog.onCheckResult() {
                     @Override
                     public void checkResult(boolean is_check) {
                         CategoryManager.getInstance(CategoriesActivity.this).deleteCategory(categoryList.get(position),is_check);
                         categoryList.remove(position);
                         if (categoryList.size() == 0) {
-                            txtCategoryHint.setText("No Categories. add one :");
+                            txtCategoryHint.setText(R.string.noCat_addOne);
                         }
                         categoryListAdapter.notifyDataSetChanged();
                     }
                 });
-        appDialog.setOkButton("Delete",null);
-        appDialog.setCancelButton("Cancel", null);
+        appDialog.setOkButton(getString(R.string.delete),null);
+        appDialog.setCancelButton(getString(R.string.cancel), null);
         appDialog.show(getSupportFragmentManager(),"DeleteCategory");
     }
 

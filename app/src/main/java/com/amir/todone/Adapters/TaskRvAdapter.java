@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityOptionsCompat;
@@ -154,6 +151,9 @@ public class TaskRvAdapter extends RecyclerView.Adapter<TaskVH> {
         LinearLayout subTaskLayout = holder.getSubTasksLayout();
         subTaskLayout.removeAllViews();
         if (task.getSubtasks_count() > 0) {
+            holder.getImgShowSubTask().setVisibility(View.VISIBLE);
+            holder.getTxtSubTasksState().setVisibility(View.VISIBLE);
+            holder.getSubTasksLayout().setVisibility(View.VISIBLE);
             List<SubTask> subTasks = task.getSubtasks();
             for (SubTask sub : subTasks) {
                 View subAddView = View.inflate(context, R.layout.subtask_layout, null);
@@ -161,7 +161,6 @@ public class TaskRvAdapter extends RecyclerView.Adapter<TaskVH> {
                 subCheckBox.setText(sub.getText());
                 subCheckBox.setChecked(sub.isDone());
                 subCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    Log.e("Sub", sub.getText() + " changed to " + isChecked);
                     if (isChecked) {
                         task.incrementDoneSubtasks_count();
                         if (TaskManager.getInstance(context).subTaskDone(sub)) {

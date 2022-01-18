@@ -35,15 +35,17 @@ public class CategoryManager {
         return Da.getInstance(context).getCategoryById(id);
     }
 
+    public void aTaskLeftThisCategory(String id){
+        Da.getInstance(context).aTaskLeftTHisCategory(id);
+    }
+
     public List<Task> getCategoryTasks(Category category){
         return Da.getInstance(context).getCategoryTasks(category);
     }
 
     public void deleteCategory(Category category , boolean deleteItsTasks){
-        Da.getInstance(context).deleteCategory(category);
-        if (deleteItsTasks){
-            // Todo : delete Task by category
-        }
+        Da.getInstance(context).deleteCategory(category,deleteItsTasks);
+
     }
     public void createCategory(@NonNull Category category){
         category.setId(Da.getInstance(context).createCategory(category));

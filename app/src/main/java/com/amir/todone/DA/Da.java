@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.airbnb.lottie.L;
 import com.amir.todone.Domain.Category.Category;
 import com.amir.todone.Domain.Task.SubTask;
 import com.amir.todone.Domain.Task.Task;
@@ -105,17 +104,12 @@ public class Da {
         );
     }
 
-    //a task add or deleted that had this category
-    public void editCategoryCount(Category category, int newCount) {
-        sql.update(getStrRes(R.string.tableName_Categories),
-                new Field("id", category.getId()), new Field(getStrRes(R.string.category_Count), newCount + "")
-        );
-    }
-
     //delete Category
-    public void deleteCategory(Category category) {
+    public void deleteCategory(Category category, boolean deleteItsTasks) {
         sql.delete(getStrRes(R.string.tableName_Categories),
                 new Field("id", category.getId()));
+        if (deleteItsTasks)
+            sql.delete(getStrRes(R.string.tableName_Tasks), new Field(getStrRes(R.string.task_Category_id), category.getId()));
     }
 
     // get all Categories
@@ -154,6 +148,13 @@ public class Da {
                 category = new Category(id, name, count);
             }
         return category;
+    }
+
+    //get category bu passing Id
+    public void aTaskLeftTHisCategory(String catId) {
+        sql.incrementBy(-1, getStrRes(R.string.category_Count),
+                getStrRes(R.string.tableName_Categories),
+                new Field("id", catId));
     }
 
     //get Category's tasks
@@ -308,7 +309,7 @@ public class Da {
         sql.incrementBy(1, getStrRes(R.string.task_doneSubTasks_Count),
                 getStrRes(R.string.tableName_Tasks),
                 new Field("id", subTask.getTask_id()));
-        if (checkAllDone(subTask.getTask_id())){
+        if (checkAllDone(subTask.getTask_id())) {
             return true;
         }
         return false;
@@ -326,7 +327,7 @@ public class Da {
                         cursor.getColumnIndexOrThrow(getStrRes(R.string.task_subTasks_Count)));
                 int subDC = cursor.getInt(
                         cursor.getColumnIndexOrThrow(getStrRes(R.string.task_doneSubTasks_Count)));
-                if (subDC==subC)
+                if (subDC == subC)
                     return true;
             }
         return false;
@@ -339,7 +340,7 @@ public class Da {
         sql.incrementBy(-1, getStrRes(R.string.task_doneSubTasks_Count),
                 getStrRes(R.string.tableName_Tasks),
                 new Field("id", subTask.getTask_id()));
-        if (!checkAllDone(subTask.getTask_id())){
+        if (!checkAllDone(subTask.getTask_id())) {
             return true;
         }
         return false;
@@ -347,9 +348,9 @@ public class Da {
 
     public void deleteTask(Task task) {
         sql.delete(getStrRes(R.string.tableName_Tasks),
-                new Field("id",task.getId()));
+                new Field("id", task.getId()));
         sql.delete(getStrRes(R.string.tableName_SubTasks),
-                new Field(getStrRes(R.string.subTask_Task_id),task.getId()));
+                new Field(getStrRes(R.string.subTask_Task_id), task.getId()));
         sql.incrementBy(-1, getStrRes(R.string.category_Count),
                 getStrRes(R.string.tableName_Categories),
                 new Field("id", task.getCategory_id()));
@@ -357,29 +358,32 @@ public class Da {
 
     public void deleteSubtask(SubTask subTask) {
         sql.delete(getStrRes(R.string.tableName_SubTasks),
-                new Field("id",subTask.getId()));
+                new Field("id", subTask.getId()));
     }
 
     public List<String> updateTask(Task task) {
         List<String> ids = new ArrayList<>();
         sql.update(getStrRes(R.string.tableName_Tasks),
-                new Field("id",task.getId()),
-                new Field(getStrRes(R.string.task_text),task.getTaskText()),
-                new Field(getStrRes(R.string.task_isDone),task.isDone()?"1":"0"),
-                new Field(getStrRes(R.string.task_Category_id),task.getCategory_id()),
-                new Field(getStrRes(R.string.task_Date),task.getDate()),
-                new Field(getStrRes(R.string.task_Time),task.getTime()),
-                new Field(getStrRes(R.string.task_subTasks_Count),task.getSubtasks_count()+""),
-                new Field(getStrRes(R.string.task_doneSubTasks_Count),task.getDoneSubtasks_count()+"")
+                new Field("id", task.getId()),
+                new Field(getStrRes(R.string.task_text), task.getTaskText()),
+                new Field(getStrRes(R.string.task_isDone), task.isDone() ? "1" : "0"),
+                new Field(getStrRes(R.string.task_Category_id), task.getCategory_id()),
+                new Field(getStrRes(R.string.task_Date), task.getDate()),
+                new Field(getStrRes(R.string.task_Time), task.getTime()),
+                new Field(getStrRes(R.string.task_subTasks_Count), task.getSubtasks_count() + ""),
+                new Field(getStrRes(R.string.task_doneSubTasks_Count), task.getDoneSubtasks_count() + "")
         );
         ids.add(task.getId());
         for (SubTask s :
                 task.getSubtasks()) {
             ids.add(sql.insert(getStrRes(R.string.tableName_SubTasks), new FieldMap(
                     new Field(getStrRes(R.string.subTask_name), s.getText()),
-                    new Field(getStrRes(R.string.subTask_isDone), s.isDone()?"1":"0"),
+                    new Field(getStrRes(R.string.subTask_isDone), s.isDone() ? "1" : "0"),
                     new Field(getStrRes(R.string.subTask_Task_id), ids.get(0)))));
         }
+        sql.incrementBy(1, getStrRes(R.string.category_Count),
+                getStrRes(R.string.tableName_Categories),
+                new Field("id", task.getCategory_id()));
         return ids;
     }
 

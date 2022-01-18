@@ -17,8 +17,6 @@ import androidx.fragment.app.FragmentManager;
 
 import com.amir.todone.R;
 
-import java.util.Objects;
-
 public class AppDialog extends DialogFragment {
 
     public interface onTextResult {

@@ -3,20 +3,18 @@ package com.amir.todone.Fragments;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.amir.todone.Adapters.TaskRvAdapter;
 import com.amir.todone.Dialogs.AppDialog;
@@ -26,7 +24,6 @@ import com.amir.todone.Domain.Task.Task;
 import com.amir.todone.Domain.Task.TaskManager;
 import com.amir.todone.R;
 import com.amir.todone.ShowTasksActivity;
-import com.amir.todone.TaskActivity;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
@@ -99,20 +96,20 @@ public class HomeFragment extends Fragment {
                 Rect scrollBounds = new Rect();
                 homeSV.getHitRect(scrollBounds);
                 if (todayTitle.getLocalVisibleRect(scrollBounds)) {
-                    if (!lastTodayVisible) setTitle("Your Tasks");
+                    if (!lastTodayVisible) setTitle(getString(R.string.your_task));
                 } else {
-                    if (lastTodayVisible) setTitle("Today");
+                    if (lastTodayVisible) setTitle(getString(R.string.today));
                     else {
                         if (tomorrowTitle.getLocalVisibleRect(scrollBounds)) {
-                            if (!lastTomorrowVisible) if (have[0]) setTitle("Today");
-                            else setTitle("Your Tasks");
+                            if (!lastTomorrowVisible) if (have[0]) setTitle(getString(R.string.today));
+                            else setTitle(getString(R.string.your_task));
                         } else {
-                            if (lastTomorrowVisible) setTitle("Tomorrow");
+                            if (lastTomorrowVisible) setTitle(getString(R.string.tomorrow));
                             else {
                                 if (othersTitle.getLocalVisibleRect(scrollBounds)) {
-                                    if (!lastOthersVisible) if (have[1]) setTitle("Tomorrow");
-                                    else setTitle("Your Tasks");
-                                } else if (lastOthersVisible) setTitle("Others");
+                                    if (!lastOthersVisible) if (have[1]) setTitle(getString(R.string.tomorrow));
+                                    else setTitle(getString(R.string.your_task));
+                                } else if (lastOthersVisible) setTitle(getString(R.string.others));
                             }
                         }
                     }
@@ -128,7 +125,7 @@ public class HomeFragment extends Fragment {
 
     private void setTitle(String title) {
         if (!have[0] && !have[1] && !have[2])
-            collapsingToolbarLayout.setTitle("You have no Task !");
+            collapsingToolbarLayout.setTitle(getString(R.string.noTask));
         else
             collapsingToolbarLayout.setTitle(title);
 
@@ -162,9 +159,9 @@ public class HomeFragment extends Fragment {
             setupOthers();
         }
         if (have[0] || have[1] || have[2]) {
-            setTitle("Your Tasks");
+            setTitle(getString(R.string.your_task));
         } else {
-            setTitle("You have no Task !");
+            setTitle(getString(R.string.noTask));
             addNewLayout.setVisibility(View.VISIBLE);
         }
     }
@@ -184,6 +181,7 @@ public class HomeFragment extends Fragment {
             if (have[0]) {
                 todayAdapter.notifyDataSetChanged();
             } else {
+                othersTitle.setVisibility(View.VISIBLE);
                 have[0] = true;
                 todayTitle.setVisibility(View.VISIBLE);
                 setupToday();
@@ -201,6 +199,7 @@ public class HomeFragment extends Fragment {
             if (have[1]) {
                 tomorrowAdapter.notifyDataSetChanged();
             } else {
+                othersTitle.setVisibility(View.VISIBLE);
                 have[1] = true;
                 tomorrowTitle.setVisibility(View.VISIBLE);
                 setupTomorrow();
@@ -234,10 +233,10 @@ public class HomeFragment extends Fragment {
             }
         }
         if (have[0] || have[1] || have[2]) {
-            setTitle("Your Tasks");
+            setTitle(getString(R.string.your_task));
             addNewLayout.setVisibility(View.GONE);
         } else {
-            setTitle("You have no Task !");
+            setTitle(getString(R.string.noTask));
             addNewLayout.setVisibility(View.VISIBLE);
         }
     }
@@ -313,9 +312,9 @@ public class HomeFragment extends Fragment {
     private void categoryClick (Category category) {
         AppDialog dialog = new AppDialog();
         dialog.setTitle(category.getName());
-        dialog.setMassage("Do you want to see all tasks of this category?");
-        dialog.setCancelButton("No", null);
-        dialog.setOkButton("Yes", new View.OnClickListener() {
+        dialog.setMassage(getString(R.string.do_you_want_to_see_categoryTask));
+        dialog.setCancelButton(getString(R.string.no), null);
+        dialog.setOkButton(getString(R.string.yes), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ShowTasksActivity.class);

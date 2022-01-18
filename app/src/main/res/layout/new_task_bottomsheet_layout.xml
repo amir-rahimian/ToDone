@@ -24,21 +24,21 @@
                 android:alpha="0.5"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:enabled="false"
-                android:text="Add"
+                android:text="@string/add_button"
                 android:textColor="?attr/colorSecondary"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/txtAdtask"
-                style="@style/textStyle.settings.title"
+                style="@style/textStyle.settings.smallTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="18dp"
-                android:text="Add new Task"
+                android:text="@string/add_new_task"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,7 +76,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="18dp"
                     android:maxLines="5"
-                    android:hint="task"
+                    android:hint="@string/task"
                     android:maxLength="150" />
 
                 <LinearLayout
@@ -109,12 +109,12 @@
 
                     <TextView
                         android:id="@+id/textView3"
-                        style="@style/textStyle.settings.title"
+                        style="@style/textStyle.settings.smallTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="16dp"
-                        android:text="Add a Subtask" />
+                        android:text="@string/add_a_subtask" />
                 </LinearLayout>
 
                 <TextView
@@ -122,20 +122,20 @@
                     style="@style/textStyle.hintTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="You can add up to 5 Subtasks" />
+                    android:text="@string/you_can_add_up_to_subtasks" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/txtsetting"
-                        style="@style/textStyle.settings.title"
+                        android:id="@+id/txtSetting"
+                        style="@style/textStyle.settings.smallTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
-                        android:text="Settings"
+                        android:text="@string/settings"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -151,7 +151,7 @@
                         android:paddingBottom="12dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txtsetting">
+                        app:layout_constraintTop_toBottomOf="@+id/txtSetting">
 
                         <ImageView
                             android:id="@+id/imgOp1"
@@ -170,7 +170,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginStart="16dp"
-                            android:text="Category"
+                            android:text="@string/category"
                             app:layout_constraintBottom_toBottomOf="@+id/imgOp1"
                             app:layout_constraintStart_toEndOf="@+id/imgOp1"
                             app:layout_constraintTop_toTopOf="@+id/imgOp1" />
@@ -182,7 +182,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginEnd="16dp"
-                            android:text="Set"
+                            android:text="@string/set"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -218,7 +218,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginStart="16dp"
-                            android:text="Date"
+                            android:text="@string/date"
                             app:layout_constraintBottom_toBottomOf="@+id/imgOp2"
                             app:layout_constraintStart_toEndOf="@+id/imgOp2"
                             app:layout_constraintTop_toTopOf="@+id/imgOp2" />
@@ -230,7 +230,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginEnd="16dp"
-                            android:text="Set"
+                            android:text="@string/set"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -267,7 +267,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginStart="16dp"
-                            android:text="Time"
+                            android:text="@string/time"
                             app:layout_constraintBottom_toBottomOf="@+id/imgOp3"
                             app:layout_constraintStart_toEndOf="@+id/imgOp3"
                             app:layout_constraintTop_toTopOf="@+id/imgOp3" />
@@ -279,7 +279,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginEnd="16dp"
-                            android:text="Set"
+                            android:text="@string/set"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -292,7 +292,7 @@
                     style="@style/textStyle.hintTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Try log press on items for more option :)" />
+                    android:text="@string/try_log_press_on_items_for_deselect" />
 
                 <View
                     android:id="@+id/extraSpace"

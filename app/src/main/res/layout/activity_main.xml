@@ -19,7 +19,9 @@
         android:layout_width="280dp"
         android:layout_height="match_parent"
         android:background="?attr/colorOnSecondary"
-        android:layout_gravity="start">
+        android:clickable="true"
+        android:layout_gravity="start"
+        android:focusable="true">
         <include android:id="@+id/drawer_header"
             layout="@layout/nav_header_main"
             android:layout_width="match_parent"
@@ -60,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:text="Done"
+                    android:text="@string/done"
                     app:layout_constraintBottom_toBottomOf="@+id/imgDone"
                     app:layout_constraintStart_toEndOf="@+id/imgDone"
                     app:layout_constraintTop_toTopOf="@+id/imgDone" />
@@ -71,7 +73,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="5"
                     app:layout_constraintBottom_toBottomOf="@+id/imgDone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/imgDone" />
@@ -105,7 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:text="Category's"
+                    android:text="@string/categories"
                     app:layout_constraintBottom_toBottomOf="@+id/imgCategory"
                     app:layout_constraintStart_toEndOf="@+id/imgCategory"
                     app:layout_constraintTop_toTopOf="@+id/imgCategory" />
@@ -116,7 +117,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="5"
                     app:layout_constraintBottom_toBottomOf="@+id/imgCategory"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/imgCategory" />
@@ -124,6 +124,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/drawerSettingsOp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
@@ -149,7 +150,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:text="Settings"
+                    android:text="@string/settings"
                     app:layout_constraintBottom_toBottomOf="@+id/imgSettings"
                     app:layout_constraintStart_toEndOf="@+id/imgSettings"
                     app:layout_constraintTop_toTopOf="@+id/imgSettings" />

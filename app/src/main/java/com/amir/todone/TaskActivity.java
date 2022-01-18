@@ -1,11 +1,5 @@
 package com.amir.todone;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Paint;
@@ -24,7 +18,12 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amir.todone.DA.Da;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.amir.todone.Dialogs.AppDialog;
 import com.amir.todone.Dialogs.CategoryPickerDialog;
 import com.amir.todone.Domain.Category.Category;
@@ -32,8 +31,8 @@ import com.amir.todone.Domain.Category.CategoryManager;
 import com.amir.todone.Domain.Task.SubTask;
 import com.amir.todone.Domain.Task.Task;
 import com.amir.todone.Domain.Task.TaskManager;
-import com.amir.todone.Fragments.HomeFragment;
 import com.amir.todone.Objects.DateManager;
+import com.amir.todone.Objects.Settings;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -104,7 +103,7 @@ public class TaskActivity extends AppCompatActivity {
                 if (emptyTextView == -1) {
                     addSubTask();
                 } else {
-                    Toast.makeText(TaskActivity.this, "You have an empty Subtask", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TaskActivity.this, R.string.have_empty_subtask, Toast.LENGTH_SHORT).show();
                     subList.getChildAt(emptyTextView).findViewById(R.id.edtAddCategory).requestFocus();
                 }
             }
@@ -132,11 +131,6 @@ public class TaskActivity extends AppCompatActivity {
                 // Todo : Done Task
                 haveChange = true;
                 boolean isChecked = taskCheckbox.isChecked();
-//                    if (taskCheckbox.isChecked()) {
-////                        TaskManager.getInstance(TaskActivity.this).taskDone(task);
-//                    } else {
-////                        TaskManager.getInstance(TaskActivity.this).taskUnDone(task);
-//                    }
                 changeAllSubsTo(isChecked);
             }
         });
@@ -164,7 +158,7 @@ public class TaskActivity extends AppCompatActivity {
                         if (item.getItemId() == R.id.delete) {
                             haveChange = true;
                             taskCategory = null;
-                            txtSelectedCategory.setText("Set");
+                            txtSelectedCategory.setText(R.string.set);
                         } else {
                             categoryOp.callOnClick();
                         }
@@ -208,7 +202,7 @@ public class TaskActivity extends AppCompatActivity {
                         if (item.getItemId() == R.id.delete) {
                             haveChange = true;
                             taskDate = null;
-                            txtSelectedDate.setText("Set");
+                            txtSelectedDate.setText(R.string.set);
                             txtSelectedDate.setTextColor(getResources().getColor(R.color.textColor_hint));
                             timeOp.animate().alpha(0.5f);
                         } else {
@@ -228,7 +222,7 @@ public class TaskActivity extends AppCompatActivity {
                         haveChange = true;
                         if (new DateManager(Calendar.getInstance()).isDatePast(taskDate)) {
                             txtSelectedDate.setTextColor(getResources().getColor(R.color.error));
-                            Toast.makeText(TaskActivity.this, "Want to do this in the past?", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TaskActivity.this, R.string.wanado_in_past, Toast.LENGTH_SHORT).show();
                             txtSelectedDate.setText(taskDate);
                             if (timeOp.getAlpha() == 1.0f) timeOp.animate().alpha(0.5f);
                             if (taskTime != null)
@@ -270,7 +264,7 @@ public class TaskActivity extends AppCompatActivity {
                             if (item.getItemId() == R.id.delete) {
                                 haveChange = true;
                                 taskTime = null;
-                                txtSelectedTime.setText("Set");
+                                txtSelectedTime.setText(R.string.set);
                                 txtSelectedTime.setTextColor(getResources().getColor(R.color.textColor_hint));
                             } else {
                                 timeOp.callOnClick();
@@ -292,7 +286,7 @@ public class TaskActivity extends AppCompatActivity {
                             txtSelectedTime.setText(taskTime);
                             if (new DateManager(Calendar.getInstance()).isTimePast(taskDate, taskTime)) {
                                 txtSelectedTime.setTextColor(getResources().getColor(R.color.error));
-                                Toast.makeText(TaskActivity.this, "Want to do this in the past?", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(TaskActivity.this, R.string.wanado_in_past, Toast.LENGTH_SHORT).show();
                             } else {
                                 txtSelectedTime.setTextColor(getResources().getColor(R.color.textColor_hint));
                             }
@@ -310,7 +304,7 @@ public class TaskActivity extends AppCompatActivity {
                     }
                 }, 1000);
             } else {
-                Toast.makeText(TaskActivity.this, "You need to Set Date first !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TaskActivity.this, R.string.date_first, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -366,7 +360,7 @@ public class TaskActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 haveChange = true;
                 if (s.length() == 30)
-                    Toast.makeText(TaskActivity.this, "Max length of a subTask is 30 characters", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TaskActivity.this, R.string.max_subtask_len, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -432,16 +426,17 @@ public class TaskActivity extends AppCompatActivity {
             onBackPressed();
         } else if (item.getItemId() == R.id.deleteTask) {
             AppDialog dialog = new AppDialog();
-            dialog.setTitle("Delete Task?");
-            dialog.setMassage("Are you sure you want to delete this task?");
-            dialog.setOkButton("DELETE", new View.OnClickListener() {
+            dialog.setTitle(getString(R.string.delete_task));
+            dialog.setMassage(getString(R.string.sure_delete_task));
+            dialog.setOkButton(getResources().getString(R.string.delete), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     TaskManager.getInstance(TaskActivity.this).deleteTask(task);
+                    Settings.getInstance(TaskActivity.this).notifyTaskChanged();
                     finish();
                 }
             });
-            dialog.setCancelButton("Cancel", new View.OnClickListener() {
+            dialog.setCancelButton(getResources().getString(R.string.cancel), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dialog.dismiss();
@@ -461,14 +456,9 @@ public class TaskActivity extends AppCompatActivity {
     private void updateTask() {
         task.set_Done(taskCheckbox.isChecked());
         task.editTaskText(edtTaskText.getText().toString().trim());
-        if (taskCategory != null)
-            task.setCategory_id(taskCategory.getId());
-        else {
-            task.setCategory_id("-1");
-        }
         if (taskDate != null) {
             if (new DateManager(Calendar.getInstance()).isDatePast(taskDate)) {
-                Toast.makeText(TaskActivity.this, "You have chosen the wrong Date", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TaskActivity.this, R.string.wrong_date, Toast.LENGTH_SHORT).show();
                 txtSelectedTime.setTextColor(getResources().getColor(R.color.error));
                 txtSelectedDate.setTextColor(getResources().getColor(R.color.error));
                 return;
@@ -479,13 +469,20 @@ public class TaskActivity extends AppCompatActivity {
         }
         if (taskTime != null) {
             if (new DateManager(Calendar.getInstance()).isTimePast(taskDate, taskTime)) {
-                Toast.makeText(TaskActivity.this, "You have chosen the wrong Time", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TaskActivity.this, R.string.wrong_time, Toast.LENGTH_SHORT).show();
                 txtSelectedTime.setTextColor(getResources().getColor(R.color.error));
                 return;
             } else
                 task.setTime(taskTime);
         } else {
             task.setTime("-1");
+        }
+        if (!task.getCategory_id().equals("-1"))
+        CategoryManager.getInstance(TaskActivity.this).aTaskLeftThisCategory(task.getCategory_id());
+        if (taskCategory != null)
+            task.setCategory_id(taskCategory.getId());
+        else {
+            task.setCategory_id("-1");
         }
         int doneSubs = checkAllSubtasksDone();
         for (SubTask s :
@@ -497,6 +494,7 @@ public class TaskActivity extends AppCompatActivity {
         task.setSubtasks_count(subTasks.size());
         task.setDoneSubtasks_count(doneSubs);
         TaskManager.getInstance(TaskActivity.this).updateTask(task);
+        Settings.getInstance(TaskActivity.this).notifyTaskChanged();
         finish();
     }
 
@@ -524,15 +522,15 @@ public class TaskActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (haveChange) {
             AppDialog dialog = new AppDialog();
-            dialog.setTitle("Discard Changes?");
-            dialog.setMassage("Are you sure you want to discard all changes?");
-            dialog.setOkButton("Discard", new View.OnClickListener() {
+            dialog.setTitle(getString(R.string.discard_change));
+            dialog.setMassage(getString(R.string.sure_discard));
+            dialog.setOkButton(getString(R.string.discard), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     finish();
                 }
             });
-            dialog.setCancelButton("Cancel", new View.OnClickListener() {
+            dialog.setCancelButton(getString(R.string.cancel), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dialog.dismiss();

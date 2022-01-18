@@ -1,7 +1,5 @@
 package com.amir.todone.Objects;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import java.text.SimpleDateFormat;

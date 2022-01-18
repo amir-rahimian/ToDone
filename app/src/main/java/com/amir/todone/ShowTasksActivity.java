@@ -1,17 +1,16 @@
 package com.amir.todone;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import com.amir.todone.Adapters.TaskRvAdapter;
 import com.amir.todone.Dialogs.AppDialog;
@@ -53,14 +52,14 @@ public class ShowTasksActivity extends AppCompatActivity {
                 setTitle(category.getName());
                 state = activityState.Category;
                 int count = category.getTaskCount();
-                txtTaskCount.setText(count + " Task" + (count > 1 ? "s" : ""));
+                txtTaskCount.setText(count + " " +getString(R.string.task));
                 taskToShow = CategoryManager.getInstance(this).getCategoryTasks(category);
             }
             if (intent.getBoolean("is_forDone")) {
-                setTitle("Done");
+                setTitle(R.string.done);
                 state = activityState.Done;
                 int count = intent.getInt("count");
-                txtTaskCount.setText(count + " Task" + (count > 1 ? "s" : ""));
+                txtTaskCount.setText(count + " " + getString(R.string.task));
                 taskToShow = TaskManager.getInstance(this).getDoneTasks();
             }
             tasksRV.setLayoutManager(new LinearLayoutManager(this));
@@ -78,9 +77,9 @@ public class ShowTasksActivity extends AppCompatActivity {
                     Category category = CategoryManager.getInstance(ShowTasksActivity.this).getCategoryById(taskToShow.get(position).getCategory_id());
                     AppDialog dialog = new AppDialog();
                     dialog.setTitle(category.getName());
-                    dialog.setMassage("Do you want to see all tasks of this category?");
-                    dialog.setCancelButton("No",null);
-                    dialog.setOkButton("Yes", new View.OnClickListener() {
+                    dialog.setMassage(getString(R.string.do_you_want_to_see_categoryTask));
+                    dialog.setCancelButton(getString(R.string.no),null);
+                    dialog.setOkButton(getString(R.string.yes), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(ShowTasksActivity.this, ShowTasksActivity.class);

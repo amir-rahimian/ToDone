@@ -27,13 +27,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.amir.todone.Domain.Category.Category;
 import com.amir.todone.Domain.Category.CategoryManager;
 import com.amir.todone.Domain.Task.SubTask;
 import com.amir.todone.Domain.Task.Task;
 import com.amir.todone.Domain.Task.TaskManager;
 import com.amir.todone.Objects.DateManager;
 import com.amir.todone.R;
-import com.amir.todone.Domain.Category.Category;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -162,7 +162,7 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {
                             if (s.length() == 30)
-                                Toast.makeText(getContext(), "Max length of a subTask is 30 characters", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), R.string.max_subtask_len, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -182,7 +182,7 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
                         addASubtaskOption.setVisibility(View.GONE);
                     }
                 } else {
-                    Toast.makeText(getContext(), "You have an empty Subtask", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.have_empty_subtask, Toast.LENGTH_SHORT).show();
                     subList.getChildAt(emptyTextView).findViewById(R.id.edtAddCategory).requestFocus();
                 }
             }
@@ -206,7 +206,7 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId() == R.id.delete) {
                             taskCategory = null;
-                            txtCategorySelected.setText("Set");
+                            txtCategorySelected.setText(R.string.set);
                         } else {
                             categoryOp.callOnClick();
                         }
@@ -247,7 +247,7 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId() == R.id.delete) {
                             taskDate = null;
-                            txtDateSelected.setText("Set");
+                            txtDateSelected.setText(R.string.set);
                             txtDateSelected.setTextColor(getResources().getColor(R.color.textColor_hint));
                             timeOp.animate().alpha(0.5f);
                         } else {
@@ -266,7 +266,7 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
                         taskDate = new DateManager(Calendar.getInstance()).formatDateForDateBase(year, month, dayOfMonth);
                         if (new DateManager(Calendar.getInstance()).isDatePast(taskDate)) {
                             txtDateSelected.setTextColor(getResources().getColor(R.color.error));
-                            Toast.makeText(getContext(), "Want to do this in the past?", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), R.string.wanado_in_past, Toast.LENGTH_SHORT).show();
                             txtDateSelected.setText(taskDate);
                             if (timeOp.getAlpha() == 1.0f) timeOp.animate().alpha(0.5f);
                             if (taskTime != null)
@@ -307,7 +307,7 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
                         public boolean onMenuItemClick(MenuItem item) {
                             if (item.getItemId() == R.id.delete) {
                                 taskTime = null;
-                                txtTimeSelected.setText("Set");
+                                txtTimeSelected.setText(R.string.set);
                                 txtTimeSelected.setTextColor(getResources().getColor(R.color.textColor_hint));
                             } else {
                                 timeOp.callOnClick();
@@ -328,7 +328,7 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
                             txtTimeSelected.setText(taskTime);
                             if (new DateManager(Calendar.getInstance()).isTimePast(taskDate, taskTime)) {
                                 txtTimeSelected.setTextColor(getResources().getColor(R.color.error));
-                                Toast.makeText(getContext(), "Want to do this in the past?", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), R.string.wanado_in_past, Toast.LENGTH_SHORT).show();
                                 txtTimeSelected.setText(taskTime);
                             } else {
                                 txtTimeSelected.setTextColor(getResources().getColor(R.color.textColor_hint));
@@ -347,7 +347,7 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
                     }
                 }, 1000);
             } else {
-                Toast.makeText(getContext(), "You need to Set Date first !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.date_first, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -369,13 +369,13 @@ public class AddTaskBottomDialog extends BottomSheetDialogFragment {
         List<SubTask> subTasks = subTaskData();
         if (taskDate != null)
             if (new DateManager(Calendar.getInstance()).isDatePast(taskDate)) {
-                Toast.makeText(getContext(), "You have chosen the wrong Date", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.wrong_date), Toast.LENGTH_SHORT).show();
                 txtDateSelected.setTextColor(getResources().getColor(R.color.error));
                 txtTimeSelected.setTextColor(getResources().getColor(R.color.error));
             }
         if (taskTime != null)
             if (new DateManager(Calendar.getInstance()).isTimePast(taskDate, taskTime)) {
-                Toast.makeText(getContext(), "You have chosen the wrong Time", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.wrong_time), Toast.LENGTH_SHORT).show();
                 txtTimeSelected.setTextColor(getResources().getColor(R.color.error));
             }
         TaskManager.getInstance(getContext())
