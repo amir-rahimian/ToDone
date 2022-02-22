@@ -25,6 +25,9 @@
     <style name="fabShape" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerSize">30%</item>
     </style>
+    <style name="buttonShape" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSize">20%</item>
+    </style>
 
     <style name="textStyle.menu.text" parent="Widget.AppCompat.TextView">
         <item name="android:textSize">16sp</item>

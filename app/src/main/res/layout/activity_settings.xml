@@ -8,12 +8,13 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
+        app:elevation="0dp"
         android:background="?colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarSetting"
+            android:id="@+id/toolbarAccount"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"/>
 

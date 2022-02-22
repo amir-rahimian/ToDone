@@ -64,5 +64,12 @@
     <string name="sure_discard">مطمعنید که میخواهید تغغیرات را لغو کنید؟</string>
     <string name="discard">لغو تغییرات</string>
     <string name="subtask">زیر وظیفه</string>
+    <string name="google_drive">Google Drive</string>
+    <string name="tap_to_login">برای ورود کلیک کنید</string>
+    <string name="google_drive_hint">برای ایمن سازی اطلاعات شما، همه وظایف به صورت محلی ذخیره می شوند. لطفاً آنها را در Google Drive خود ذخیره کنید تا بتوانید با استفاده از حساب Google خود در هر جایی آنها را بازیابی کنید.</string>
+    <string name="last_time">اخرین همگام سازی</string>
+    <string name="auto_sync">همگام سازی خودکار</string>
+    <string name="auto_sync_hint">برای جلوگیری از فراموشی همگام سازی وظایف، ذخیره خودکار را فعال کنید.</string>
+    <string name="sync_now">همگام سازی</string>
 
 </resources>

@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             drawer_layout.open();
         });
         imgUser.setOnClickListener(view -> {
-
+            startActivity(new Intent(MainActivity.this, AccountSyncActivity.class));
         });
         drawerDoneOp.setOnClickListener(view -> {
             if (!txtDoneCount.getText().toString().equals("0")) {

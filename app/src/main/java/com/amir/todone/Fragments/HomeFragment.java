@@ -190,9 +190,9 @@ public class HomeFragment extends Fragment {
         } else {
             if (have[0]) {
                 have[0] = false;
-                todayTitle.setVisibility(View.GONE);
                 todayAdapter.notifyDataSetChanged();
             }
+            todayTitle.setVisibility(View.GONE);
         }
 
         if (tomorrowTasks.size() > 0) {
@@ -208,9 +208,9 @@ public class HomeFragment extends Fragment {
         } else {
             if (have[1]) {
                 have[1] = false;
-                tomorrowTitle.setVisibility(View.GONE);
                 tomorrowAdapter.notifyDataSetChanged();
             }
+            tomorrowTitle.setVisibility(View.GONE);
         }
 
         if (otherTasks.size() > 0) {
@@ -228,9 +228,9 @@ public class HomeFragment extends Fragment {
         } else {
             if (have[2]) {
                 have[2] = false;
-                othersTitle.setVisibility(View.GONE);
                 otherAdapter.notifyDataSetChanged();
             }
+            othersTitle.setVisibility(View.GONE);
         }
         if (have[0] || have[1] || have[2]) {
             setTitle(getString(R.string.your_task));

@@ -91,8 +91,6 @@ public class SQLite {
         myDataBase.execSQL(sb);
     }
 
-    ;
-
     //select
     public Cursor select(String tableName, List<String> projection, Field filter1, boolean is1_forNot, Field filter2, boolean is2_forNot, boolean is_and, String order, String limit) {
         StringBuilder sb = new StringBuilder();
@@ -169,20 +167,6 @@ public class SQLite {
     public void delete(String tableName, Field filter) {
         myDataBase.execSQL("DELETE FROM " + tableName + " WHERE " + filter.getKey() + "= '" + filter.getValue() + "'");
     }
-
-    //exists?
-//    public boolean checkExists(String tableName,Field filed){
-//        StringBuilder sb = new StringBuilder("SELECT * FROM " + tableName);
-//        sb.append(" WHERE ").append(filed.getKey()).append(" LIKE '").append(filed.getValue()).append("' ");
-//        Cursor cursor = null;
-//        try {
-//            cursor = myDataBase.rawQuery(sb.toString(),null);
-//        }catch (Exception e){
-//            Log.e("Error",e.getMessage());
-//            return false;
-//        }
-//        return cursor.getCount()>0;
-//    }
 
     //truncate
     public void truncate(String tableName) {

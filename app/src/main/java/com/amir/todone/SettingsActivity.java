@@ -1,5 +1,6 @@
 package com.amir.todone;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
@@ -32,7 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        toolbar = findViewById(R.id.toolbarSetting);
+        toolbar = findViewById(R.id.toolbarAccount);
         accountOp = findViewById(R.id.accountOp);
         themesOp = findViewById(R.id.themesOp);
         languageOp = findViewById(R.id.languageOp);
@@ -49,7 +50,7 @@ public class SettingsActivity extends AppCompatActivity {
         accountOp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Todo : open account sync activity
+                startActivity(new Intent(SettingsActivity.this, AccountSyncActivity.class));
             }
         });
         themesOp.setOnClickListener(new View.OnClickListener() {

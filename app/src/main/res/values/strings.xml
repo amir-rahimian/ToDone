@@ -79,5 +79,12 @@
     <string name="sure_discard">Are you sure you want to discard all changes?</string>
     <string name="discard">Discard</string>
     <string name="subtask">subtask</string>
+    <string name="google_drive">Google Drive</string>
+    <string name="tap_to_login">Tap to login</string>
+    <string name="google_drive_hint">To secure your information all tasks are stored locally. Please save them on your Google Drive so that you can restore them anywhere using your Google account.</string>
+    <string name="last_time">Last Time</string>
+    <string name="auto_sync">Auto Sync</string>
+    <string name="auto_sync_hint">turn on automatic save to avoid forgetting to sync tasks.</string>
+    <string name="sync_now">Sync Now</string>
 
 </resources>
